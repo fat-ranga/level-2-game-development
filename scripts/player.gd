@@ -153,7 +153,9 @@ func handle_movement(delta):
 		gravity_vector += Vector3.DOWN * gravity * delta
 		h_acceleration = air_acceleration
 	elif is_on_floor() and full_contact:
-		gravity_vector = -get_floor_normal() * gravity
+		# Multiply gravity by some small value when on the ground so that we will still
+		# stick to the ground, but won't immediately fall fast if we go off a slope.
+		gravity_vector = -get_floor_normal() * (gravity * 0.2)
 		h_acceleration = regular_acceleration
 	else:
 		gravity_vector = -get_floor_normal()

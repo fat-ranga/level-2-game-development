@@ -305,7 +305,7 @@ nodes/one_handed_animation/node = SubResource( 16 )
 nodes/one_handed_animation/position = Vector2( -880, 100 )
 nodes/one_handed_fire_weapon/node = SubResource( 29 )
 nodes/one_handed_fire_weapon/position = Vector2( -320, 60 )
-node_connections = [ "one_handed_fire_weapon", 0, "IdleWalkRun", "one_handed_fire_weapon", 1, "one_handed_animation", "output", 0, "one_handed_fire_weapon" ]
+node_connections = [ "output", 0, "one_handed_fire_weapon", "one_handed_fire_weapon", 0, "IdleWalkRun", "one_handed_fire_weapon", 1, "one_handed_animation" ]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=33]
 
@@ -639,7 +639,7 @@ target_node = NodePath("../../../Head/Camera/Hand/IKPosition")
 min_distance = 10.0
 
 [node name="RightHand" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999789, 0.0205551, -0.000385657, -0.000231758, 0.0075123, 0.999972, 0.0205584, 0.999761, -0.00750554, -0.172412, 1.58653, 0.378785 )
+transform = Transform( -0.999789, 0.0205505, -0.000414312, -0.000259906, 0.00752082, 0.999972, 0.0205538, 0.999761, -0.00751334, -0.172383, 1.5866, 0.378698 )
 bone_name = "Hand.R"
 
 [node name="Items" type="Spatial" parent="HumanArmature/Skeleton/RightHand"]
