@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/Jack.gltf-7f29d93544a277ce75b9a017b8851c49.scn"
+path="res://.import/weapons.gltf-00009b70be5dabb5067d528c33d07778.scn"
 
 [deps]
 
-source_file="res://models/Jack.gltf"
-dest_files=[ "res://.import/Jack.gltf-7f29d93544a277ce75b9a017b8851c49.scn" ]
+source_file="res://models/items/weapons.gltf"
+dest_files=[ "res://.import/weapons.gltf-00009b70be5dabb5067d528c33d07778.scn" ]
 
 [params]
 
@@ -32,12 +32,12 @@ animation/import=true
 animation/fps=30.0
 animation/filter_script=""
 animation/storage=true
-animation/keep_custom_tracks=true
+animation/keep_custom_tracks=false
 animation/optimizer/enabled=true
 animation/optimizer/max_linear_error=0.05
 animation/optimizer/max_angular_error=0.01
 animation/optimizer/max_angle=22
-animation/optimizer/remove_unused_tracks=true
+animation/optimizer/remove_unused_tracks=false
 animation/clips/amount=0
 animation/clip_1/name=""
 animation/clip_1/start_frame=0
