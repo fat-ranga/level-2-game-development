@@ -3,6 +3,12 @@ extends Item
 # References.
 var animation_player
 
+# Rigidbody version for picking up/dropping.
+export(PackedScene) var item_pickup
+
+# The offset of the weapon from the hand when picked up.
+export var equip_position = Vector3.ZERO
+
 # Weapon states.
 var is_firing = false
 var is_reloading = false
@@ -120,3 +126,13 @@ func update_ammo(action="refresh", additional_ammo=0):
 	
 	item_manager.update_hud(item_data)
 
+# Drops item on the ground by spawning a weapon pickup and deleting itself.
+func drop_item():
+	var pickup = Global.instantiate_node(item_pickup, global_transform.origin - player.global_transform.basis.z.normalized())
+	
+	# Copy values from current item into the item we're dropping.
+	pickup.ammo_in_magazine = ammo_in_magazine
+	pickup.extra_ammo = extra_ammo
+	pickup.magazine_size = magazine_size
+	
+	queue_free() # Delete item currently held.

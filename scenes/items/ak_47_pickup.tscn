@@ -1,123 +1,13 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scripts/gun.gd" type="Script" id=1]
-[ext_resource path="res://scenes/muzzle_flashes/ar_muzzle_flash.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/hit_effects/blood_1.tscn" type="PackedScene" id=3]
-[ext_resource path="res://models/items/textures/AKTexture.png" type="Texture" id=4]
-[ext_resource path="res://textures/ui/ak_icon.png" type="Texture" id=5]
-[ext_resource path="res://scenes/items/ak_47_pickup.tscn" type="PackedScene" id=6]
-[ext_resource path="res://models/items/ak_material.material" type="Material" id=7]
-
-[sub_resource type="Animation" id=3]
-resource_name = "Equip"
-tracks/0/type = "method"
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "show_item"
-} ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:translation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -0.0307972, 0.0577995, -0.134509 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath(".:rotation_degrees")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -2.14466, 0.0361146, 0.0729736 ) ]
-}
-
-[sub_resource type="Animation" id=2]
-resource_name = "Fire"
-tracks/0/type = "method"
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "fire_bullet"
-} ]
-}
-
-[sub_resource type="Animation" id=8]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -0.0307972, 0.0577995, -0.134509 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -2.14466, 0.0361146, 0.0729736 ) ]
-}
-
-[sub_resource type="Animation" id=4]
-resource_name = "Reload"
-
-[sub_resource type="Animation" id=5]
-resource_name = "Unequip"
-tracks/0/type = "method"
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "hide_item"
-} ]
-}
+[ext_resource path="res://scripts/item_pickup.gd" type="Script" id=1]
+[ext_resource path="res://models/items/textures/AKTexture.png" type="Texture" id=2]
 
 [sub_resource type="SpatialMaterial" id=9]
 resource_name = "AK"
 vertex_color_use_as_albedo = true
 params_cull_mode = 2
-albedo_texture = ExtResource( 4 )
+albedo_texture = ExtResource( 2 )
 
 [sub_resource type="ArrayMesh" id=6]
 resource_name = "weapons_Cube001"
@@ -147,52 +37,18 @@ bind/2/name = "trigger"
 bind/2/bone = -1
 bind/2/pose = Transform( -0.999996, -0.00102693, 0.00242388, 4.65603e-07, -0.92084, -0.389941, 0.00263245, -0.389939, 0.920837, -1.02297e-06, 0.00379573, -0.000389356 )
 
-[node name="AK47" type="Spatial"]
-transform = Transform( 0.999999, -0.00129722, 0.000629877, 0.00127274, 0.999299, 0.0374226, -0.000677981, -0.0374218, 0.999299, -0.0307972, 0.0577995, -0.134509 )
+[sub_resource type="BoxShape" id=8]
+extents = Vector3( 0.0132033, 0.0925368, 0.450989 )
+
+[node name="AK47Pickup" type="RigidBody"]
 script = ExtResource( 1 )
 item_name = "AK-47"
-item_image = ExtResource( 5 )
-item_pickup = ExtResource( 6 )
-ammo_in_magazine = 30
-extra_ammo = 120
-fire_rate = 10.0
-impact_effect = ExtResource( 3 )
-muzzle_flash_path = NodePath("AK_Armature/Skeleton/AK-47/Muzzle/MuzzleFlash")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Equip = SubResource( 3 )
-anims/Fire = SubResource( 2 )
-anims/RESET = SubResource( 8 )
-anims/Reload = SubResource( 4 )
-anims/Unequip = SubResource( 5 )
-
-[node name="AK_Armature" type="Spatial" parent="."]
-
-[node name="Skeleton" type="Skeleton" parent="AK_Armature"]
-bones/0/name = "body"
-bones/0/parent = -1
-bones/0/rest = Transform( 1, -3.4173e-07, 0, 0, 0, 1, -3.4173e-07, -1, 0, 2.89093e-08, -0.0578419, 0.0571981 )
-bones/0/enabled = true
-bones/0/bound_children = [  ]
-bones/1/name = "magazine"
-bones/1/parent = 0
-bones/1/rest = Transform( 4.17233e-07, 1.49012e-07, -1, 0.822415, 0.568888, 4.47035e-07, 0.568888, -0.822415, 1.19209e-07, -1.28246e-08, 0.158718, 0.0625824 )
-bones/1/enabled = true
-bones/1/bound_children = [  ]
-bones/2/name = "trigger"
-bones/2/parent = 0
-bones/2/rest = Transform( -0.999997, 5.9884e-07, 0.00263213, -0.00242354, 0.389941, -0.920837, -0.00102693, -0.92084, -0.389939, -9.76108e-09, 0.0553595, 0.0611854 )
-bones/2/enabled = true
-bones/2/bound_children = [  ]
-
-[node name="AK-47" type="MeshInstance" parent="AK_Armature/Skeleton"]
-layers = 2
+[node name="AK-47" type="MeshInstance" parent="."]
 mesh = SubResource( 6 )
 skin = SubResource( 7 )
-material/0 = ExtResource( 7 )
+skeleton = NodePath("")
 
-[node name="Muzzle" type="Spatial" parent="AK_Armature/Skeleton/AK-47"]
-transform = Transform( 1, 5.63887e-11, 0, 3.63798e-12, 1, 0, -5.82077e-11, 0, 1, 0, 0.038, -0.605464 )
-
-[node name="MuzzleFlash" parent="AK_Armature/Skeleton/AK-47/Muzzle" instance=ExtResource( 2 )]
-layers = 2
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.018088, -0.120581 )
+shape = SubResource( 8 )

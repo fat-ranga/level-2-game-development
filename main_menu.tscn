@@ -2,7 +2,7 @@
 
 [ext_resource path="res://main_menu.gd" type="Script" id=1]
 [ext_resource path="res://textures/ui/main_menu_background.png" type="Texture" id=2]
-[ext_resource path="res://main_menu.theme" type="Theme" id=3]
+[ext_resource path="res://joe_rumbi.theme" type="Theme" id=3]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -25,23 +25,23 @@ theme = ExtResource( 3 )
 
 [node name="StartButton" type="Button" parent="VBoxContainer"]
 margin_right = 178.0
-margin_bottom = 20.0
+margin_bottom = 27.0
 focus_neighbour_top = NodePath("../ExitButton")
 focus_neighbour_bottom = NodePath("../SettingsButton")
 text = "Start"
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer"]
-margin_top = 24.0
+margin_top = 31.0
 margin_right = 178.0
-margin_bottom = 44.0
+margin_bottom = 58.0
 focus_neighbour_top = NodePath("../StartButton")
 focus_neighbour_bottom = NodePath("../ExitButton")
 text = "Settings"
 
 [node name="ExitButton" type="Button" parent="VBoxContainer"]
-margin_top = 48.0
+margin_top = 62.0
 margin_right = 178.0
-margin_bottom = 68.0
+margin_bottom = 89.0
 focus_neighbour_top = NodePath("../SettingsButton")
 focus_neighbour_bottom = NodePath("../StartButton")
 text = "Exit"

@@ -1,194 +1,7 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scripts/gun.gd" type="Script" id=1]
-[ext_resource path="res://scenes/muzzle_flashes/ar_muzzle_flash.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/hit_effects/blood_1.tscn" type="PackedScene" id=3]
-[ext_resource path="res://models/items/textures/Pistol_Texture.png" type="Texture" id=4]
-[ext_resource path="res://textures/ui/m1911_icon.png" type="Texture" id=5]
-[ext_resource path="res://scenes/items/pistol_pickup.tscn" type="PackedScene" id=6]
-
-[sub_resource type="Animation" id=3]
-resource_name = "Equip"
-tracks/0/type = "method"
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "show_item"
-} ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:translation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -0.0253422, 0.0524489, -0.133157 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath(".:rotation_degrees")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -3.91825, 0.300836, -3.66736 ) ]
-}
-
-[sub_resource type="Animation" id=2]
-resource_name = "Fire"
-tracks/0/type = "method"
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "fire_bullet"
-} ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:translation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -0.0253422, 0.0524489, -0.133157 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath(".:rotation_degrees")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -3.91825, 0.300836, -3.66736 ) ]
-}
-
-[sub_resource type="Animation" id=8]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
-}
-
-[sub_resource type="Animation" id=4]
-resource_name = "Reload"
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -0.0253422, 0.0524489, -0.133157 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -3.91825, 0.300836, -3.66736 ) ]
-}
-
-[sub_resource type="Animation" id=5]
-resource_name = "Unequip"
-tracks/0/type = "method"
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "hide_item"
-} ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:translation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -0.0253422, 0.0524489, -0.133157 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath(".:rotation_degrees")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -3.91825, 0.300836, -3.66736 ) ]
-}
-
-[sub_resource type="SpatialMaterial" id=9]
-resource_name = "PistolMaterial"
-vertex_color_use_as_albedo = true
-params_cull_mode = 2
-albedo_texture = ExtResource( 4 )
+[ext_resource path="res://scripts/item_pickup.gd" type="Script" id=1]
+[ext_resource path="res://models/items/pistol_material.material" type="Material" id=5]
 
 [sub_resource type="ArrayMesh" id=6]
 resource_name = "weapons_Cube006"
@@ -199,7 +12,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 2194903,
 "index_count": 1362,
-"material": SubResource( 9 ),
+"material": ExtResource( 5 ),
 "primitive": 4,
 "skeleton_aabb": [ AABB( -0.0161291, -0.113731, -0.158402, 0.0322583, 0.17012, 0.263083 ), AABB( -0.00429919, -0.0245663, -0.0105468, 0.0042992, 0.0295582, 0.0174172 ), AABB( -0.0185525, 0.0159514, -0.150083, 0.037105, 0.0306569, 0.228675 ), AABB( -0.0123566, -0.116246, 0.0120565, 0.0247132, 0.108208, 0.0884732 ) ],
 "vertex_count": 1202
@@ -221,53 +34,18 @@ bind/3/name = "magazine"
 bind/3/bone = -1
 bind/3/pose = Transform( 5.70414e-07, -0.350969, -0.936387, 3.40842e-07, -0.936387, 0.350969, -1, -5.19357e-07, -4.14503e-07, 0.0301751, -0.0261629, 5.70953e-09 )
 
-[node name="Pistol" type="Spatial"]
+[sub_resource type="BoxShape" id=8]
+extents = Vector3( 0.0166077, 0.0764228, 0.128076 )
+
+[node name="Pistol" type="RigidBody"]
 script = ExtResource( 1 )
-item_name = "M1911"
-item_image = ExtResource( 5 )
-item_pickup = ExtResource( 6 )
-fire_rate = 2.0
-impact_effect = ExtResource( 3 )
-muzzle_flash_path = NodePath("PistolArmature/Skeleton 3/M1911/Muzzle/MuzzleFlash")
+item_name = "Pistol"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Equip = SubResource( 3 )
-anims/Fire = SubResource( 2 )
-anims/RESET = SubResource( 8 )
-anims/Reload = SubResource( 4 )
-anims/Unequip = SubResource( 5 )
-
-[node name="PistolArmature" type="Spatial" parent="."]
-
-[node name="Skeleton 3" type="Skeleton" parent="PistolArmature"]
-bones/0/name = "body"
-bones/0/parent = -1
-bones/0/rest = Transform( 2.38419e-07, -2.38419e-07, -1, 1, 0, 2.38419e-07, 0, -1, 2.38419e-07, 1.30108e-08, 0.00838475, 0.0382554 )
-bones/0/enabled = true
-bones/0/bound_children = [  ]
-bones/1/name = "trigger"
-bones/1/parent = 0
-bones/1/rest = Transform( 0.376999, -0.926214, -4.37441e-07, 0.926214, 0.376999, 4.6569e-07, -2.66414e-07, -5.80729e-07, 1, -0.00719559, 0.0379085, 2.72551e-09 )
-bones/1/enabled = true
-bones/1/bound_children = [  ]
-bones/2/name = "slide"
-bones/2/parent = 0
-bones/2/rest = Transform( 1, 1.91055e-07, -5.20548e-07, -5.20548e-07, 5.36442e-07, -1, -1.91055e-07, 1, 5.36442e-07, 0.0291137, 0.178625, -0.0197124 )
-bones/2/enabled = true
-bones/2/bound_children = [  ]
-bones/3/name = "magazine"
-bones/3/parent = 0
-bones/3/rest = Transform( -0.350969, -0.936387, -7.14065e-07, 0.936387, -0.350969, 6.49697e-07, -8.58983e-07, -4.40617e-07, 1, -0.0222928, 0.000817485, 1.10633e-08 )
-bones/3/enabled = true
-bones/3/bound_children = [  ]
-
-[node name="M1911" type="MeshInstance" parent="PistolArmature/Skeleton 3"]
-layers = 2
+[node name="M1911" type="MeshInstance" parent="."]
 mesh = SubResource( 6 )
 skin = SubResource( 7 )
+skeleton = NodePath("")
 
-[node name="Muzzle" type="Spatial" parent="PistolArmature/Skeleton 3/M1911"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.034, -0.169244 )
-
-[node name="MuzzleFlash" parent="PistolArmature/Skeleton 3/M1911/Muzzle" instance=ExtResource( 2 )]
-layers = 2
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0272233, -0.0293818 )
+shape = SubResource( 8 )

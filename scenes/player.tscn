@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://scripts/player.gd" type="Script" id=1]
 [ext_resource path="res://models/char_one_handed_fire_loop.anim" type="Animation" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://scenes/items/unarmed.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/items/ak_47.tscn" type="PackedScene" id=13]
 [ext_resource path="res://models/char_walk_backwards_loop.anim" type="Animation" id=14]
+[ext_resource path="res://default_env.tres" type="Environment" id=15]
 
 [sub_resource type="ArrayMesh" id=3]
 resource_name = "human_Jack001"
@@ -309,12 +310,13 @@ node_connections = [ "one_handed_fire_weapon", 0, "IdleWalkRun", "one_handed_fir
 [sub_resource type="AnimationNodeStateMachinePlayback" id=33]
 
 [sub_resource type="CapsuleShape" id=18]
-radius = 0.249836
+radius = 0.388299
 height = 1.3417
 
 [node name="Player" type="KinematicBody"]
 process_priority = 2
 script = ExtResource( 1 )
+ads_position = Vector3( 0.015, -0.15, -0.449 )
 
 [node name="HumanArmature" type="Spatial" parent="."]
 process_priority = 1
@@ -485,7 +487,7 @@ bones/32/name = "Hand.R"
 bones/32/parent = 31
 bones/32/rest = Transform( 0.998568, 0.0314596, -0.0432782, -0.0219932, 0.978724, 0.203997, 0.0487751, -0.202753, 0.978015, -8.73115e-09, 0.266077, 3.72529e-09 )
 bones/32/enabled = true
-bones/32/bound_children = [  ]
+bones/32/bound_children = [ NodePath("RightHand") ]
 bones/33/name = "Thumb.1.R"
 bones/33/parent = 32
 bones/33/rest = Transform( 0.0288948, 0.0246015, 0.99928, 0.858944, 0.510702, -0.0374101, -0.511255, 0.859406, -0.00637472, 0.00332522, 0.0251911, 0.0269134 )
@@ -623,6 +625,7 @@ bones/59/enabled = true
 bones/59/bound_children = [  ]
 
 [node name="HugoMesh" type="MeshInstance" parent="HumanArmature/Skeleton"]
+layers = 2
 mesh = SubResource( 3 )
 skin = SubResource( 2 )
 
@@ -636,7 +639,7 @@ target_node = NodePath("../../../Head/Camera/Hand/IKPosition")
 min_distance = 10.0
 
 [node name="RightHand" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999794, 0.0202675, -0.000256687, -0.00010176, 0.00766245, 0.999971, 0.0202697, 0.999766, -0.00765842, -0.172549, 1.58655, 0.378793 )
+transform = Transform( -0.999789, 0.0205551, -0.000385657, -0.000231758, 0.0075123, 0.999972, 0.0205584, 0.999761, -0.00750554, -0.172412, 1.58653, 0.378785 )
 bone_name = "Hand.R"
 
 [node name="Items" type="Spatial" parent="HumanArmature/Skeleton/RightHand"]
@@ -646,10 +649,11 @@ script = ExtResource( 10 )
 [node name="Unarmed" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 12 )]
 
 [node name="AK47" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 13 )]
-transform = Transform( 1, -0.00129722, 0.000629877, 0.00127274, 0.999299, 0.0374227, -0.000677981, -0.0374218, 0.9993, -0.0307972, 0.0577995, -0.134509 )
+transform = Transform( 1, -0.00129722, 0.000629877, 0.00127274, 0.999298, 0.0374227, -0.000677981, -0.0374218, 0.9993, -0.0307972, 0.0577995, -0.134509 )
 
 [node name="Pistol" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 11 )]
 transform = Transform( 0.999999, 0, 0, 0, 1.00001, 0, 0, 0, 1, 0, 0, 0 )
+fire_rate = 10.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 process_priority = 2
@@ -681,7 +685,28 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.81545, 0.187942 )
 [node name="Camera" type="Camera" parent="Head"]
 transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0 )
 fov = 90.0
-far = 1000.0
+near = 0.1
+far = 2000.0
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Head/Camera"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+
+[node name="HUD" parent="Head/Camera/ViewportContainer" instance=ExtResource( 9 )]
+
+[node name="Viewport" type="Viewport" parent="Head/Camera/ViewportContainer"]
+size = Vector2( 1024, 600 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="FirstPersonCamera" type="Camera" parent="Head/Camera/ViewportContainer/Viewport"]
+cull_mask = 2
+environment = ExtResource( 15 )
+fov = 90.0
+near = 0.01
+far = 10.0
 
 [node name="AimCast" type="RayCast" parent="Head/Camera"]
 enabled = true
@@ -691,16 +716,13 @@ cast_to = Vector3( 0, 0, -1000 )
 enabled = true
 cast_to = Vector3( 0, 0, -5 )
 collide_with_areas = true
-collide_with_bodies = false
 
 [node name="Hand" type="Spatial" parent="Head/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.301162, -0.33387, -0.448588 )
 
 [node name="IKPosition" type="Position3D" parent="Head/Camera/Hand"]
-transform = Transform( 1, 2.30111e-09, -1.99259e-08, 1.99259e-08, -0.227926, 0.973679, -2.30111e-09, -0.973679, -0.227926, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0 )
 enabled = true
-
-[node name="HUD" parent="." instance=ExtResource( 9 )]

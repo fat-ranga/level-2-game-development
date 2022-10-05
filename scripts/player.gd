@@ -18,7 +18,18 @@ var sway_threshold = 5
 var sway_lerp = 5
 var sway_factor_location: float = 0.1
 var sway_factor_rotation: float = 0.8
-var original_hand_transform: Transform
+var original_hand_position = Vector3.ZERO
+
+# Aim down sights (ADS).
+export var ads_position = Vector3.ZERO
+var ads_speed = 10
+var is_ads = false
+var ads_fov = 50
+var regular_fov
+var sprint_fov
+
+var fov_change_factor = 1.3 # High-speed FOV change, determines sprint_fov.
+var fov_change_speed = 6 # How fast we transition into different FOVs.
 
 # Movement.
 var gravity_vector: Vector3 = Vector3()
@@ -30,6 +41,7 @@ var movement: Vector3 = Vector3()
 onready var ground_check = $GroundCheck
 onready var head = $Head
 onready var camera = $Head/Camera
+onready var first_person_camera = $Head/Camera/ViewportContainer/Viewport/FirstPersonCamera
 onready var aimcast = $Head/Camera/AimCast # Raycast used for close-range firefights.
 onready var reach = $Head/Camera/Reach # Raycast used for interacting with things.
 onready var item_manager = $HumanArmature/Skeleton/RightHand/Items
@@ -49,8 +61,22 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	skeleton_ik_node.start()
 	
-	# Get local location for hand so that the hand sway has a value to go back to.
-	original_hand_transform = hand.transform.basis
+	# Get local location for hand so that the hand sway and ADS has a value to go back to.
+	original_hand_position = hand.translation
+	
+	# Same with the camera FOV.
+	regular_fov = camera.fov
+	
+	# Set our secondary camera to the same FOV.
+	first_person_camera.fov = regular_fov
+	
+	# Set sprint FOV to be a bit larger than the FOV set by the user.
+	# Make sure it doesn't end up over 179 degrees, since that's an
+	# impossible FOV for a camera
+	sprint_fov = regular_fov * fov_change_factor
+	if sprint_fov >= 179:
+		sprint_fov = 179
+		print("Turn down your FOV, bro!")
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -71,13 +97,47 @@ func _input(event):
 					item_manager.previous_item()
 
 func _process(delta):
+	# Set the hud/first person camera to the same position as the actual camera.
+	first_person_camera.global_transform = camera.global_transform
+	
 	handle_animation()
 	handle_hand_sway(delta)
 	handle_items()
 
 func _physics_process(delta):
 	handle_movement(delta)
+
+func aim_down_sights(value:bool, delta):
+	is_ads = value
 	
+	# If value is set to true, we look down sights.
+	if is_ads:
+		hand.transform.origin = hand.transform.origin.linear_interpolate(ads_position, ads_speed * delta)
+		camera.fov = lerp(camera.fov, ads_fov, ads_speed * delta)
+		first_person_camera.fov = lerp(camera.fov, ads_fov, ads_speed * delta)
+	# If not, we don't.
+	else:
+		hand.transform.origin = hand.transform.origin.linear_interpolate(original_hand_position, ads_speed * delta)
+		camera.fov = lerp(camera.fov, regular_fov, ads_speed * delta)
+		first_person_camera.fov = lerp(camera.fov, regular_fov, ads_speed * delta)
+
+func process_movement_effects(delta, velocity):
+	# Head bobbing.
+	if h_velocity.length() <3.0 or is_on_floor() == false:
+		pass
+	elif h_velocity.length():
+		pass
+	else:
+		pass
+	
+	# High velocity FOV change effect.
+	if Input.is_action_pressed("sprint"):
+		camera.fov = lerp(camera.fov, sprint_fov , fov_change_speed * delta)
+		first_person_camera.fov = lerp(first_person_camera.fov, sprint_fov , fov_change_speed * delta)
+	else:
+		camera.fov = lerp(camera.fov, regular_fov , fov_change_speed * delta)
+		first_person_camera.fov = lerp(first_person_camera.fov, regular_fov , fov_change_speed * delta)
+
 func handle_movement(delta):
 		# Which way we are going to move.
 	direction = Vector3()
@@ -119,11 +179,18 @@ func handle_movement(delta):
 	movement.x = h_velocity.x + gravity_vector.x
 	movement.y = gravity_vector.y
 	
+	# Camera FOV change and stuff need movement-related variables, so this function is here.
+	process_movement_effects(delta, movement)
+	
 	# Actually move the player.
 	move_and_slide(movement, Vector3.UP)
 
 func handle_hand_sway(delta):
-	pass
+	# Aim down sights.
+	if Input.is_action_pressed("aim_down_sights"):
+		aim_down_sights(true, delta)
+	else:
+		aim_down_sights(false, delta)
 
 func handle_animation():
 	animation_tree.set("parameters/LookUpDown/blend_position", rad2deg(head.rotation.x))
@@ -148,3 +215,11 @@ func handle_items():
 	# Reloading.
 	if Input.is_action_just_pressed("reload"):
 		item_manager.reload()
+	
+	# Drop item.
+	if Input.is_action_just_pressed("drop_item"):
+		item_manager.drop_item()
+	
+	# Item pickup.
+	item_manager.process_item_pickup()
+	

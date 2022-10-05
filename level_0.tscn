@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/objects/ammo_pickup.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/items/pistol_pickup.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/items/ak_47_pickup.tscn" type="PackedScene" id=4]
 
 [sub_resource type="PlaneMesh" id=1]
 
@@ -40,8 +42,8 @@ light_energy = 1.5
 light_specular = 2.0
 shadow_enabled = true
 directional_shadow_blend_splits = true
-directional_shadow_normal_bias = 0.0
-directional_shadow_bias_split_scale = 0.0
+directional_shadow_normal_bias = 0.463
+directional_shadow_bias_split_scale = 0.061
 directional_shadow_depth_range = 1
 directional_shadow_max_distance = 1000.0
 
@@ -50,10 +52,24 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7653, 1.78814e-06, -1.1510
 
 [node name="Pickups" type="Spatial" parent="."]
 
-[node name="AmmoPickup" parent="Pickups" instance=ExtResource( 2 )]
+[node name="Ammunition" type="Spatial" parent="Pickups"]
 
-[node name="AmmoPickup2" parent="Pickups" instance=ExtResource( 2 )]
+[node name="AmmoPickup" parent="Pickups/Ammunition" instance=ExtResource( 2 )]
+
+[node name="AmmoPickup2" parent="Pickups/Ammunition" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.70301, 3.33786e-06, -4.08202 )
 
-[node name="AmmoPickup3" parent="Pickups" instance=ExtResource( 2 )]
+[node name="AmmoPickup3" parent="Pickups/Ammunition" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.69829, 4.76837e-06, 3.449 )
+
+[node name="Weapons" type="Spatial" parent="Pickups"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.675, 0 )
+
+[node name="AK47Pickup" parent="Pickups/Weapons" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9444, 0, -4.8876 )
+
+[node name="Pistol" parent="Pickups/Weapons" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.1113, 7.15256e-07, -6.25802 )
+
+[node name="AK47Pickup2" parent="Pickups/Weapons" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.763, 5.96046e-07, -6.57317 )
