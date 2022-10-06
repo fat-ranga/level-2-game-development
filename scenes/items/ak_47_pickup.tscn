@@ -41,6 +41,7 @@ bind/2/pose = Transform( -0.999996, -0.00102693, 0.00242388, 4.65603e-07, -0.920
 extents = Vector3( 0.0132033, 0.0925368, 0.450989 )
 
 [node name="AK47Pickup" type="RigidBody"]
+collision_layer = 524288
 script = ExtResource( 1 )
 item_name = "AK-47"
 

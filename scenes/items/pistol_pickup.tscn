@@ -38,6 +38,7 @@ bind/3/pose = Transform( 5.70414e-07, -0.350969, -0.936387, 3.40842e-07, -0.9363
 extents = Vector3( 0.0166077, 0.0764228, 0.128076 )
 
 [node name="Pistol" type="RigidBody"]
+collision_layer = 524288
 script = ExtResource( 1 )
 item_name = "Pistol"
 

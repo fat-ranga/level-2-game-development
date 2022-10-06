@@ -242,10 +242,14 @@ func hide_interaction_prompt():
 # Searches for item pickups, and based on player input executes further tasks
 # (will be called from player.gd)
 func process_item_pickup():
-	reach_ray.force_raycast_update()
+	var from = reach_ray.global_transform.origin
+	var to = reach_ray.global_transform.origin - reach_ray.global_transform.basis.z.normalized() * 5.0
+	var space_state = get_world().direct_space_state
+	 # 524288 is the value of the item pickup collision layer.
+	var collision = space_state.intersect_ray(from, to, [owner], 524288)
 	
-	if reach_ray.is_colliding():
-		var body = reach_ray.get_collider()
+	if collision:
+		var body = collision["collider"]
 		
 		if body.has_method("get_item_pickup_data"):
 			var item_data = body.get_item_pickup_data()
@@ -255,8 +259,8 @@ func process_item_pickup():
 			if Input.is_action_just_pressed("interact"):
 				switch_item(item_data)
 				body.queue_free()
-		else:
-			hide_interaction_prompt()
+	else:
+		hide_interaction_prompt()
 
 func update_hud(item_data):
 	var item_slot = "1"
