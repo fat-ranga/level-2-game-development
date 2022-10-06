@@ -4,16 +4,29 @@ var item_ui
 var health_ui
 var display_ui
 var slot_ui
+var background
+
+onready var pause_menu = $PauseMenu
 
 func _enter_tree():
 	item_ui = $Background/ItemUI
 	health_ui = $Background/ItemUI
 	display_ui = $Background/Display/ItemTexture
 	slot_ui = $Background/Display/ItemSlot
+	background = $Background
 
 func _ready():
-	# Hide the prompt when the game is started.
+	# Hide the prompt and pause menu when the game is started.
 	hide_interaction_prompt()
+	pause_menu.hide()
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		hide_interaction_prompt()
+		background.hide()
+		pause_menu.show()
+		#pause_menu.set_paused(true)
+		pause_menu.test()
 
 func update_item_ui(item_data, item_slot):
 	slot_ui.text = item_slot

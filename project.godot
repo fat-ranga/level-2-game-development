@@ -23,10 +23,12 @@ _global_script_class_icons={
 config/name="Joe Rumbi: The Game"
 run/main_scene="res://main_menu.tscn"
 config/icon="res://icon.png"
+config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
-Global="*res://scripts/global.gd"
+Global="*res://scripts/global/global.gd"
+Save="*res://scripts/global/save.gd"
 
 [display]
 

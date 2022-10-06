@@ -1,29 +1,33 @@
 extends Control
 
+# Reference to our settings menu.
+onready var settings_menu = $SettingsMenu
+onready var buttons_container = $VBoxContainer
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
+var is_settings_hidden = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Make sure
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	# By default, set the Start button as the focus, so that when one presses
+	# 'Enter', the game is started. Also lets users use arrows to navigate the menu.
+	buttons_container.show()
 	$VBoxContainer/StartButton.grab_focus()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
+# Start the game.
 func _on_StartButton_pressed():
-	get_tree().change_scene("res://level_0.tscn")
+	get_tree().change_scene("res://world.tscn")
 
+# Open the settings menu.
 func _on_SettingsButton_pressed():
-	pass # Replace with function body.
+	buttons_container.hide()
+	settings_menu.show()
 
+# Exit the game.
 func _on_ExitButton_pressed():
 	get_tree().quit()
 
-
-
+# If the settings menu is hidden, then we enable all our other buttons.
+func _on_SettingsMenu_hide():
+	buttons_container.show()

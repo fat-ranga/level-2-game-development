@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://main_menu.gd" type="Script" id=1]
 [ext_resource path="res://textures/ui/main_menu_background.png" type="Texture" id=2]
 [ext_resource path="res://joe_rumbi.theme" type="Theme" id=3]
+[ext_resource path="res://scenes/ui/settings_menu.tscn" type="PackedScene" id=4]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -16,15 +17,16 @@ texture = ExtResource( 2 )
 expand = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 62.0
-margin_top = -132.0
-margin_right = 240.0
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 33.0
+margin_top = -66.0
+margin_right = 294.0
+margin_bottom = 66.0
 theme = ExtResource( 3 )
 
 [node name="StartButton" type="Button" parent="VBoxContainer"]
-margin_right = 178.0
+margin_right = 261.0
 margin_bottom = 27.0
 focus_neighbour_top = NodePath("../ExitButton")
 focus_neighbour_bottom = NodePath("../SettingsButton")
@@ -32,7 +34,7 @@ text = "Start"
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer"]
 margin_top = 31.0
-margin_right = 178.0
+margin_right = 261.0
 margin_bottom = 58.0
 focus_neighbour_top = NodePath("../StartButton")
 focus_neighbour_bottom = NodePath("../ExitButton")
@@ -40,12 +42,16 @@ text = "Settings"
 
 [node name="ExitButton" type="Button" parent="VBoxContainer"]
 margin_top = 62.0
-margin_right = 178.0
+margin_right = 261.0
 margin_bottom = 89.0
 focus_neighbour_top = NodePath("../SettingsButton")
 focus_neighbour_bottom = NodePath("../StartButton")
 text = "Exit"
 
+[node name="SettingsMenu" parent="." instance=ExtResource( 4 )]
+visible = false
+
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_SettingsButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="hide" from="SettingsMenu" to="." method="_on_SettingsMenu_hide"]

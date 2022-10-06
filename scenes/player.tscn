@@ -305,7 +305,7 @@ nodes/one_handed_animation/node = SubResource( 16 )
 nodes/one_handed_animation/position = Vector2( -880, 100 )
 nodes/one_handed_fire_weapon/node = SubResource( 29 )
 nodes/one_handed_fire_weapon/position = Vector2( -320, 60 )
-node_connections = [ "output", 0, "one_handed_fire_weapon", "one_handed_fire_weapon", 0, "IdleWalkRun", "one_handed_fire_weapon", 1, "one_handed_animation" ]
+node_connections = [ "one_handed_fire_weapon", 0, "IdleWalkRun", "one_handed_fire_weapon", 1, "one_handed_animation", "output", 0, "one_handed_fire_weapon" ]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=33]
 
@@ -316,7 +316,7 @@ height = 1.3417
 [node name="Player" type="KinematicBody"]
 process_priority = 2
 script = ExtResource( 1 )
-ads_position = Vector3( 0.015, -0.15, -0.449 )
+ads_position = Vector3( 0.013, -0.15, -0.449 )
 
 [node name="HumanArmature" type="Spatial" parent="."]
 process_priority = 1
@@ -487,7 +487,7 @@ bones/32/name = "Hand.R"
 bones/32/parent = 31
 bones/32/rest = Transform( 0.998568, 0.0314596, -0.0432782, -0.0219932, 0.978724, 0.203997, 0.0487751, -0.202753, 0.978015, -8.73115e-09, 0.266077, 3.72529e-09 )
 bones/32/enabled = true
-bones/32/bound_children = [ NodePath("RightHand") ]
+bones/32/bound_children = [  ]
 bones/33/name = "Thumb.1.R"
 bones/33/parent = 32
 bones/33/rest = Transform( 0.0288948, 0.0246015, 0.99928, 0.858944, 0.510702, -0.0374101, -0.511255, 0.859406, -0.00637472, 0.00332522, 0.0251911, 0.0269134 )
@@ -639,17 +639,17 @@ target_node = NodePath("../../../Head/Camera/Hand/IKPosition")
 min_distance = 10.0
 
 [node name="RightHand" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999789, 0.0205505, -0.000414312, -0.000259906, 0.00752082, 0.999972, 0.0205538, 0.999761, -0.00751334, -0.172383, 1.5866, 0.378698 )
+transform = Transform( -0.999788, 0.0205721, -0.000438198, -0.000283182, 0.00755075, 0.999972, 0.0205758, 0.99976, -0.00754289, -0.172373, 1.58652, 0.378814 )
 bone_name = "Hand.R"
 
 [node name="Items" type="Spatial" parent="HumanArmature/Skeleton/RightHand"]
-transform = Transform( 0.998036, -0.0189179, -0.0597558, -0.0593654, 0.0207004, -0.998022, 0.0201181, 0.999602, 0.019537, 0, 0, 0 )
+transform = Transform( 0.999811, -0.0195464, 4.15474e-08, 4.12741e-08, -1.43924e-08, -1, 0.0195466, 0.999804, -1.3583e-08, 0, 0, 0 )
 script = ExtResource( 10 )
 
 [node name="Unarmed" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 12 )]
 
 [node name="AK47" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 13 )]
-transform = Transform( 1, -0.00129722, 0.000629877, 0.00127274, 0.999298, 0.0374227, -0.000677981, -0.0374218, 0.9993, -0.0307972, 0.0577995, -0.134509 )
+transform = Transform( 0.965927, 0, 0.258819, 0, 0.999999, 0, -0.258819, 0, 0.965926, -0.0307972, 0.0577995, -0.134509 )
 
 [node name="Pistol" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 11 )]
 transform = Transform( 0.999999, 0, 0, 0, 1.00001, 0, 0, 0, 1, 0, 0, 0 )

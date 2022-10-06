@@ -46,7 +46,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( -2.14466, 0.0361146, 0.0729736 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -90,7 +90,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( -2.14466, 0.0361146, 0.0729736 ) ]
+"values": [ Vector3( 0, 15, 0 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -148,7 +148,7 @@ bind/2/bone = -1
 bind/2/pose = Transform( -0.999996, -0.00102693, 0.00242388, 4.65603e-07, -0.92084, -0.389941, 0.00263245, -0.389939, 0.920837, -1.02297e-06, 0.00379573, -0.000389356 )
 
 [node name="AK47" type="Spatial"]
-transform = Transform( 0.999999, -0.00129722, 0.000629877, 0.00127274, 0.999299, 0.0374226, -0.000677981, -0.0374218, 0.999299, -0.0307972, 0.0577995, -0.134509 )
+transform = Transform( 0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965925, -0.0307972, 0.0577995, -0.134509 )
 script = ExtResource( 1 )
 item_name = "AK-47"
 item_image = ExtResource( 5 )

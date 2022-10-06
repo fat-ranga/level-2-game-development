@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://joe_rumbi.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/settings_menu.gd" type="Script" id=2]
+
+[node name="SettingsMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+path_fullscreen_options_button = NodePath("Background/DisplaySettings/Fullscreen/FullscreenToggle")
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -270.5
+margin_top = -199.0
+margin_right = 270.5
+margin_bottom = 199.0
+theme = ExtResource( 1 )
+color = Color( 0.156863, 0.156863, 0.156863, 1 )
+
+[node name="DisplaySettings" type="VBoxContainer" parent="Background"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Fullscreen" type="HBoxContainer" parent="Background/DisplaySettings"]
+margin_right = 91.0
+margin_bottom = 29.0
+
+[node name="FullscreenToggle" type="CheckBox" parent="Background/DisplaySettings/Fullscreen"]
+margin_right = 24.0
+margin_bottom = 29.0
+
+[node name="Label" type="Label" parent="Background/DisplaySettings/Fullscreen"]
+margin_left = 28.0
+margin_top = 4.0
+margin_right = 91.0
+margin_bottom = 25.0
+text = "Fullscreen"
+
+[connection signal="toggled" from="Background/DisplaySettings/Fullscreen/FullscreenToggle" to="." method="_on_FullscreenToggle_toggled"]

@@ -52,14 +52,18 @@ onready var skeleton = $HumanArmature/Skeleton
 onready var skeleton_ik_node = $HumanArmature/Skeleton/SkeletonIK
 onready var animation_tree = $AnimationTree
 
-# Preload items and effects.
-onready var blood_splatter = preload("res://scenes/hit_effects/blood_1.tscn")
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Keep the mouse positioned at screen centre.
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	# Run the inverse kinematics, this ensures the hand follows the camera.
 	skeleton_ik_node.start()
+	
+	# Connect to signals emitted when settings are changed, and call
+	# the relevant function.
+	Global.connect("fov_updated", self, "_on_fov_updated")
+	Global.connect("mouse_sensitivity_updated", self, "_on_mouse_sensitivity_updated")
 	
 	# Get local location for hand so that the hand sway and ADS has a value to go back to.
 	original_hand_position = hand.translation
@@ -83,7 +87,7 @@ func _input(event):
 		# Looking around.
 		rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
 		head.rotate_x(deg2rad(event.relative.y * mouse_sensitivity))
-		head.rotation.x = clamp(head.rotation.x, deg2rad(-105), deg2rad(75))
+		head.rotation.x = clamp(head.rotation.x, deg2rad(-90), deg2rad(80))
 		
 		# Get relative mouse movement for hand sway.
 		mouse_movement = event.relative.x
@@ -97,7 +101,7 @@ func _input(event):
 					item_manager.previous_item()
 
 func _process(delta):
-	# Set the hud/first person camera to the same position as the actual camera.
+	# Set the HUD/first person camera to the same position as the actual camera.
 	first_person_camera.global_transform = camera.global_transform
 	
 	handle_animation()
@@ -139,7 +143,7 @@ func process_movement_effects(delta, velocity):
 		first_person_camera.fov = lerp(first_person_camera.fov, regular_fov , fov_change_speed * delta)
 
 func handle_movement(delta):
-		# Which way we are going to move.
+	# Which way we are going to move.
 	direction = Vector3()
 	
 	# Check if we're on the ground or not.
@@ -195,10 +199,8 @@ func handle_hand_sway(delta):
 		aim_down_sights(false, delta)
 
 func handle_animation():
-	animation_tree.set("parameters/LookUpDown/blend_position", rad2deg(head.rotation.x))
+	# TODO check if moving foward abckwadfs
 	animation_tree.set("parameters/IdleWalkRun/blend_position", h_velocity.length())
-
-
 
 func handle_items():
 	if Input.is_action_just_pressed("select_melee"):
@@ -224,4 +226,10 @@ func handle_items():
 	
 	# Item pickup.
 	item_manager.process_item_pickup()
-	
+
+# Update the regular/default FOV variable to the one set.
+func _on_fov_updated(value):
+	regular_fov = value
+
+func _on_mouse_sensitivity_updated(value):
+	mouse_sensitivity = value

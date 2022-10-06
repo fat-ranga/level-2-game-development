@@ -128,7 +128,8 @@ func update_ammo(action="refresh", additional_ammo=0):
 
 # Drops item on the ground by spawning a weapon pickup and deleting itself.
 func drop_item():
-	var pickup = Global.instantiate_node(item_pickup, global_transform.origin - player.global_transform.basis.z.normalized())
+	var pickup = Global.instantiate_node(item_pickup, global_transform.origin)
+	pickup.apply_impulse(transform.basis.z, pickup.transform.basis.z * 10)
 	
 	# Copy values from current item into the item we're dropping.
 	pickup.ammo_in_magazine = ammo_in_magazine
