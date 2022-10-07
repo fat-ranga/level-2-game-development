@@ -53,6 +53,7 @@ focus_neighbour_top = NodePath("../SettingsButton")
 focus_neighbour_bottom = NodePath("../ResumeButton")
 text = "Exit Game"
 
+[connection signal="settings_menu_closed" from="SettingsMenu" to="." method="_on_SettingsMenu_settings_menu_closed"]
 [connection signal="pressed" from="VBoxContainer/ResumeButton" to="." method="_on_ResumeButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_SettingsButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/BackToMainMenuButton" to="." method="_on_BackToMainMenuButton_pressed"]

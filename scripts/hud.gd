@@ -21,12 +21,13 @@ func _ready():
 	pause_menu.hide()
 
 func _input(event):
+	# If escape key is pressed, open the pause menu and pause the game.
 	if event.is_action_pressed("ui_cancel"):
+		print("ranga")
 		hide_interaction_prompt()
 		background.hide()
 		pause_menu.show()
-		#pause_menu.set_paused(true)
-		pause_menu.test()
+		pause_menu.set_paused(true)
 
 func update_item_ui(item_data, item_slot):
 	slot_ui.text = item_slot
@@ -58,3 +59,7 @@ func get_key_from_action(action):
 		key_string += OS.get_scancode_string(a.scancode)
 
 	return key_string
+
+# If the pause menu is closed, show all our UI again.
+func _on_PauseMenu_pause_menu_closed():
+	background.show()

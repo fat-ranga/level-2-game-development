@@ -226,7 +226,10 @@ script = ExtResource( 1 )
 item_name = "M1911"
 item_image = ExtResource( 5 )
 item_pickup = ExtResource( 6 )
-fire_rate = 2.0
+is_automatic = false
+ammo_in_magazine = 7
+extra_ammo = 45
+fire_rate = 10.0
 impact_effect = ExtResource( 3 )
 muzzle_flash_path = NodePath("PistolArmature/Skeleton 3/M1911/Muzzle/MuzzleFlash")
 

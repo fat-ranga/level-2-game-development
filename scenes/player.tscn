@@ -639,7 +639,7 @@ target_node = NodePath("../../../Head/Camera/Hand/IKPosition")
 min_distance = 10.0
 
 [node name="RightHand" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999788, 0.0205721, -0.000438198, -0.000283182, 0.00755075, 0.999972, 0.0205758, 0.99976, -0.00754289, -0.172373, 1.58652, 0.378814 )
+transform = Transform( -0.999789, 0.0205448, -0.000420645, -0.000266373, 0.00752804, 0.999972, 0.0205481, 0.999761, -0.0075206, -0.17235, 1.58649, 0.378752 )
 bone_name = "Hand.R"
 
 [node name="Items" type="Spatial" parent="HumanArmature/Skeleton/RightHand"]

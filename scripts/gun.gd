@@ -14,12 +14,13 @@ var is_firing = false
 var is_reloading = false
 
 # Gun parameters.
+export var is_automatic = true
 export var ammo_in_magazine = 15
 export var extra_ammo = 30
 onready var magazine_size = ammo_in_magazine
 
 export var damage = 10
-export var fire_rate = 1.0
+export var fire_rate = 1.0 # Non-automatic weapons also consider this.
 
 # Effects.
 export(PackedScene) var impact_effect
@@ -33,15 +34,26 @@ export var unequip_speed = 1.0
 export var reload_speed = 1.0
 
 func fire():
-	if not is_reloading:
-		if ammo_in_magazine > 0:
-			if not is_firing:
-				is_firing = true
-				animation_player.get_animation("Fire").loop = true # So we can set it to false later.
-				animation_player.play("Fire", -1.0, fire_rate)
-			return
-		elif is_firing:
-			fire_stop() # If we have no ammo, don't fire. 
+	if is_automatic:
+		if not is_reloading:
+			if ammo_in_magazine > 0:
+				if not is_firing:
+					is_firing = true
+					animation_player.get_animation("Fire").loop = true # So we can set it to false later.
+					animation_player.play("Fire", -1.0, fire_rate)
+				return
+			elif is_firing:
+				fire_stop() # If we have no ammo, don't fire. 
+	else:
+		if not is_reloading:
+			if ammo_in_magazine > 0:
+				if not is_firing:
+					is_firing = true
+					#animation_player.get_animation("Fire").loop = true # So we can set it to false later.
+					animation_player.play("Fire", -1.0, fire_rate)
+				return
+			elif is_firing:
+				fire_stop() # If we have no ammo, don't fire. 
 
 func fire_stop():
 	is_firing = false
@@ -56,7 +68,11 @@ func fire_bullet():
 	
 	# If we hit something, spawn a hit effect at that location.
 	if ray.is_colliding():
-		var impact = Global.instantiate_node(impact_effect, ray.get_collision_point())
+		var impact
+		# Spawn the hit effect a little bit away from the surface to reduce clipping.
+		var impact_position = (ray.get_collision_point()) + (ray.get_collision_normal() * 0.2)
+		impact = Global.instantiate_node(impact_effect, impact_position)
+		# TODO: delete these, or better, use a pool instead
 
 func reload():
 	if ammo_in_magazine < magazine_size and extra_ammo > 0:

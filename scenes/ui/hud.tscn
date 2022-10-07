@@ -86,3 +86,5 @@ margin_right = 2.0
 margin_bottom = 2.0
 
 [node name="PauseMenu" parent="." instance=ExtResource( 3 )]
+
+[connection signal="pause_menu_closed" from="PauseMenu" to="." method="_on_PauseMenu_pause_menu_closed"]

@@ -3,6 +3,7 @@ extends Control
 # Reference to our settings menu.
 onready var settings_menu = $SettingsMenu
 onready var buttons_container = $VBoxContainer
+onready var start_button = $VBoxContainer/StartButton
 
 var is_settings_hidden = true
 
@@ -13,7 +14,7 @@ func _ready():
 	# By default, set the Start button as the focus, so that when one presses
 	# 'Enter', the game is started. Also lets users use arrows to navigate the menu.
 	buttons_container.show()
-	$VBoxContainer/StartButton.grab_focus()
+	start_button.grab_focus()
 
 # Start the game.
 func _on_StartButton_pressed():

@@ -1,5 +1,7 @@
 extends Control
 
+signal settings_menu_closed
+
 # Paths to each of the buttons and sliders and stuff inside this menu.
 # They are changed via the Inspector.
 
@@ -34,9 +36,11 @@ func _ready():
 	fullscreen_options_button.pressed = Save.game_data.fullscreen_on
 
 # If ESCAPE is pressed, hide this settings menu.
-func _unhandled_input(event):
+func _input(event):
 	if event.is_action_pressed("ui_cancel"):
+		print("sus")
 		hide()
+		emit_signal("settings_menu_closed")
 
 
 func _on_FullscreenToggle_toggled(button_pressed):
