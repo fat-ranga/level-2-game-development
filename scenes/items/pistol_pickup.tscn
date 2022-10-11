@@ -41,6 +41,7 @@ extents = Vector3( 0.0166077, 0.0764228, 0.128076 )
 collision_layer = 524288
 script = ExtResource( 1 )
 item_name = "M1911"
+item_slot_type = "Secondary"
 ammo_in_magazine = 7
 
 [node name="M1911" type="MeshInstance" parent="."]

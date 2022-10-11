@@ -44,6 +44,9 @@ extents = Vector3( 0.0132033, 0.0925368, 0.450989 )
 collision_layer = 524288
 script = ExtResource( 1 )
 item_name = "AK-47"
+item_slot_type = "Primary"
+ammo_in_magazine = 30
+extra_ammo = 46
 
 [node name="AK-47" type="MeshInstance" parent="."]
 mesh = SubResource( 6 )

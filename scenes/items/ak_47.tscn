@@ -8,8 +8,35 @@
 [ext_resource path="res://scenes/items/ak_47_pickup.tscn" type="PackedScene" id=6]
 [ext_resource path="res://models/items/ak_material.material" type="Material" id=7]
 
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.0307972, 0.0577995, -0.134509 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 15, 0 ) ]
+}
+
 [sub_resource type="Animation" id=3]
-resource_name = "Equip"
+resource_name = "equip"
 tracks/0/type = "method"
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
@@ -50,7 +77,7 @@ tracks/2/keys = {
 }
 
 [sub_resource type="Animation" id=2]
-resource_name = "Fire"
+resource_name = "fire"
 tracks/0/type = "method"
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
@@ -66,38 +93,11 @@ tracks/0/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=8]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( -0.0307972, 0.0577995, -0.134509 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 15, 0 ) ]
-}
-
 [sub_resource type="Animation" id=4]
-resource_name = "Reload"
+resource_name = "reload"
 
 [sub_resource type="Animation" id=5]
-resource_name = "Unequip"
+resource_name = "unequip"
 tracks/0/type = "method"
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
@@ -152,19 +152,23 @@ transform = Transform( 0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965925, -
 script = ExtResource( 1 )
 item_name = "AK-47"
 item_image = ExtResource( 5 )
+item_slot_type = "Primary"
 item_pickup = ExtResource( 6 )
 ammo_in_magazine = 30
 extra_ammo = 120
 fire_rate = 10.0
 impact_effect = ExtResource( 3 )
 muzzle_flash_path = NodePath("AK_Armature/Skeleton/AK-47/Muzzle/MuzzleFlash")
+equip_speed = 2.0
+unequip_speed = 2.0
+reload_speed = 2.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Equip = SubResource( 3 )
-anims/Fire = SubResource( 2 )
 anims/RESET = SubResource( 8 )
-anims/Reload = SubResource( 4 )
-anims/Unequip = SubResource( 5 )
+anims/equip = SubResource( 3 )
+anims/fire = SubResource( 2 )
+anims/reload = SubResource( 4 )
+anims/unequip = SubResource( 5 )
 
 [node name="AK_Armature" type="Spatial" parent="."]
 

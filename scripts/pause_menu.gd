@@ -28,7 +28,6 @@ func set_paused(value):
 # If ESCAPE is pressed, hide this pause menu. Same as pressing 'Resume' button.
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
-		print("cracka")
 		set_paused(false)
 		hide()
 		emit_signal("pause_menu_closed")

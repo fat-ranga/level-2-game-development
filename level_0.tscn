@@ -71,5 +71,14 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9444, 0, -4.8876 )
 [node name="Pistol" parent="Pickups/Weapons" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.1113, 7.15256e-07, -6.25802 )
 
+[node name="Pistol3" parent="Pickups/Weapons" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.2752, 7.15256e-07, -6.25802 )
+
 [node name="AK47Pickup2" parent="Pickups/Weapons" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.763, 5.96046e-07, -6.57317 )
+
+[node name="Pistol2" parent="Pickups/Weapons" instance=ExtResource( 3 )]
+transform = Transform( 0.746255, 0.66566, 0, -0.66566, 0.746255, 0, 0, 0, 1, -12.9034, 1.00371, -4.54133 )
+
+[node name="AK47Pickup3" parent="Pickups/Weapons" instance=ExtResource( 4 )]
+transform = Transform( 0.746255, 0.66566, 0, -0.66566, 0.746255, 0, 0, 0, 1, -12.6435, 0.771859, -4.85648 )

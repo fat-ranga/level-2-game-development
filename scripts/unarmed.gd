@@ -1,10 +1,16 @@
 extends Item
 
+signal play_punch_animation
+
+var is_hitting = false
+var hit_rate = 5
+
 func fire():
-	pass
+	is_hitting = true
+	#emit_signal("play_punch_animation")
 
 func fire_stop():
-	pass
+	is_hitting = false
 
 func reload():
 	pass

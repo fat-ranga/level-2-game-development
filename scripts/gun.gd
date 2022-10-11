@@ -21,6 +21,8 @@ onready var magazine_size = ammo_in_magazine
 
 export var damage = 10
 export var fire_rate = 1.0 # Non-automatic weapons also consider this.
+export var projectiles_per_shot = 1
+export var randomness = 0.5
 
 # Effects.
 export(PackedScene) var impact_effect
@@ -39,8 +41,8 @@ func fire():
 			if ammo_in_magazine > 0:
 				if not is_firing:
 					is_firing = true
-					animation_player.get_animation("Fire").loop = true # So we can set it to false later.
-					animation_player.play("Fire", -1.0, fire_rate)
+					animation_player.get_animation("fire").loop = true # So we can set it to false later.
+					animation_player.play("fire", -1.0, fire_rate)
 				return
 			elif is_firing:
 				fire_stop() # If we have no ammo, don't fire. 
@@ -50,14 +52,14 @@ func fire():
 				if not is_firing:
 					is_firing = true
 					#animation_player.get_animation("Fire").loop = true # So we can set it to false later.
-					animation_player.play("Fire", -1.0, fire_rate)
+					animation_player.play("fire", -1.0, fire_rate)
 				return
 			elif is_firing:
 				fire_stop() # If we have no ammo, don't fire. 
 
 func fire_stop():
 	is_firing = false
-	animation_player.get_animation("Fire").loop = false
+	animation_player.get_animation("fire").loop = false
 
 # Will be called from the animation track.
 func fire_bullet():
@@ -78,17 +80,17 @@ func reload():
 	if ammo_in_magazine < magazine_size and extra_ammo > 0:
 		is_firing = false
 		
-		animation_player.play("Reload", -1.0, reload_speed)
+		animation_player.play("reload", -1.0, reload_speed)
 		is_reloading = true
 
 # Equip/unequip cycle.
 # NOTE: Make sure that there is always an animation playing, so that 
 func equip():
-	animation_player.play("Equip", -1.0, equip_speed)
+	animation_player.play("equip", -1.0, equip_speed)
 	is_reloading = false # Otherwise we cannot fire our weapon.
 
 func unequip():
-	animation_player.play("Unequip", -1.0, unequip_speed)
+	animation_player.play("unequip", -1.0, unequip_speed)
 	
 func is_equip_finished():
 	if is_equipped:
@@ -109,15 +111,15 @@ func _ready():
 	
 func on_animation_finish(anim_name):
 	match anim_name:
-		"Unequip":
+		"unequip":
 			is_equipped = false
-		"Equip":
+		"equip":
 			is_equipped = true
-		"Reload":
+		"reload":
 			is_reloading = false
 			update_ammo("reload")
 
-func update_ammo(action="refresh", additional_ammo=0):
+func update_ammo(action="refresh", additional_ammo=0, update_hud=true):
 	match action:
 		"consume":
 			ammo_in_magazine -= 1
@@ -134,18 +136,23 @@ func update_ammo(action="refresh", additional_ammo=0):
 			extra_ammo += additional_ammo
 	
 	var item_data = {
-		"Name": item_name,
-		"Image": item_image,
-		"Ammo": str(ammo_in_magazine),
-		"ExtraAmmo": str(extra_ammo)
+		"name": item_name,
+		"image": item_image,
+		"slot_type": item_slot_type,
+		"ammo": str(ammo_in_magazine),
+		"extra_ammo": str(extra_ammo)
 	}
 	
-	item_manager.update_hud(item_data)
+	# This is in case we are updating the data of an item that isn't currently in hand.
+	if update_hud:
+		item_manager.update_hud(item_data)
+	else:
+		return
 
 # Drops item on the ground by spawning a weapon pickup and deleting itself.
 func drop_item():
-	var pickup = Global.instantiate_node(item_pickup, global_transform.origin)
-	pickup.apply_impulse(transform.basis.z, pickup.transform.basis.z * 10)
+	var pickup = Global.instantiate_node(item_pickup,  global_transform.origin)
+	pickup.apply_impulse(-player.global_transform.basis.z, player.global_transform.basis.z * 5)
 	
 	# Copy values from current item into the item we're dropping.
 	pickup.ammo_in_magazine = ammo_in_magazine

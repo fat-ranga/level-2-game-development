@@ -12,6 +12,7 @@ var is_equipped = false
 # Item parameters.
 export var item_name = "Item"
 export(Texture) var item_image = null
+export(String, "Any", "Melee", "Primary", "Secondary", "Grenade", "Special") var item_slot_type = "Any"
 
 # Equip/unequip cycle.
 func equip():
@@ -33,17 +34,22 @@ func show_item():
 func hide_item():
 	visible = false
 
-func update_ammo(action="refresh"):
+func update_ammo(action="refresh", update_hud=true):
 	var item_data = {
-		"Name": item_name,
-		"Image": item_image
+		"name": item_name,
+		"image": item_image,
+		"slot_type": item_slot_type
 	}
 	
-	item_manager.update_hud(item_data)
+	# This is in case we are updating the data of an item that isn't currently in hand.
+	if update_hud:
+		item_manager.update_hud(item_data)
+	else:
+		return
 
 func on_animation_finish(anim_name):
 	match anim_name:
-		"Unequip":
+		"unequip":
 			is_equipped = false
-		"Equip":
+		"equip":
 			is_equipped = true

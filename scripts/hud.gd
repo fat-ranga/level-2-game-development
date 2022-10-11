@@ -5,6 +5,9 @@ var health_ui
 var display_ui
 var slot_ui
 var background
+var interaction_prompt
+var interaction_prompt_key
+var interaction_prompt_description
 
 onready var pause_menu = $PauseMenu
 
@@ -14,6 +17,10 @@ func _enter_tree():
 	display_ui = $Background/Display/ItemTexture
 	slot_ui = $Background/Display/ItemSlot
 	background = $Background
+	interaction_prompt = $InteractionPrompt
+	interaction_prompt_key = $InteractionPrompt/Key
+	interaction_prompt_description = $InteractionPrompt/MarginContainer/Description
+	
 
 func _ready():
 	# Hide the prompt and pause menu when the game is started.
@@ -23,7 +30,6 @@ func _ready():
 func _input(event):
 	# If escape key is pressed, open the pause menu and pause the game.
 	if event.is_action_pressed("ui_cancel"):
-		print("ranga")
 		hide_interaction_prompt()
 		background.hide()
 		pause_menu.show()
@@ -31,22 +37,26 @@ func _input(event):
 
 func update_item_ui(item_data, item_slot):
 	slot_ui.text = item_slot
-	display_ui.texture = item_data["Image"]
+	display_ui.texture = item_data["image"]
 	
-	if item_data["Name"] == "Unarmed":
-		item_ui.text = item_data["Name"]
+	print(item_data["slot_type"])
+	
+	# If the item is a melee weapon, just show the name.
+	if item_data["slot_type"] == "Melee" || item_data["slot_type"] == "Any":
+		item_ui.text = item_data["name"]
 		return
 	
-	item_ui.text = item_data["Name"] + ": " + item_data["Ammo"] + "/" + item_data["ExtraAmmo"]
+	# Otherwise, it must be a weapon with ammunition.
+	item_ui.text = item_data["name"] + ": " + item_data["ammo"] + "/" + item_data["extra_ammo"]
 
 # Show/hide interaction prompt.
 func show_interaction_prompt(description="Interact"):
-	$InteractionPrompt.visible = true
-	$InteractionPrompt/Key.text = get_key_from_action("interact") # In case input settings are changed.
-	$InteractionPrompt/Description.text = description # By default, this is 'Interact'.
+	interaction_prompt.visible = true
+	interaction_prompt_key.text = get_key_from_action("interact") # In case input settings are changed.
+	interaction_prompt_description.text = description # By default, this is 'Interact'.
 
 func hide_interaction_prompt():
-	$InteractionPrompt.visible = false
+	interaction_prompt.visible = false
 
 # Gets the keyboard key from an action.
 # This is so that the interaction prompt can show what key to press in case the input

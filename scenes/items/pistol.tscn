@@ -7,8 +7,35 @@
 [ext_resource path="res://textures/ui/m1911_icon.png" type="Texture" id=5]
 [ext_resource path="res://scenes/items/pistol_pickup.tscn" type="PackedScene" id=6]
 
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
 [sub_resource type="Animation" id=3]
-resource_name = "Equip"
+resource_name = "equip"
 tracks/0/type = "method"
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
@@ -49,7 +76,7 @@ tracks/2/keys = {
 }
 
 [sub_resource type="Animation" id=2]
-resource_name = "Fire"
+resource_name = "fire"
 tracks/0/type = "method"
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
@@ -89,35 +116,8 @@ tracks/2/keys = {
 "values": [ Vector3( -3.91825, 0.300836, -3.66736 ) ]
 }
 
-[sub_resource type="Animation" id=8]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:translation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
-}
-
 [sub_resource type="Animation" id=4]
-resource_name = "Reload"
+resource_name = "reload"
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:translation")
 tracks/0/interp = 1
@@ -144,7 +144,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-resource_name = "Unequip"
+resource_name = "unequip"
 tracks/0/type = "method"
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
@@ -225,6 +225,7 @@ bind/3/pose = Transform( 5.70414e-07, -0.350969, -0.936387, 3.40842e-07, -0.9363
 script = ExtResource( 1 )
 item_name = "M1911"
 item_image = ExtResource( 5 )
+item_slot_type = "Secondary"
 item_pickup = ExtResource( 6 )
 is_automatic = false
 ammo_in_magazine = 7
@@ -232,13 +233,16 @@ extra_ammo = 45
 fire_rate = 10.0
 impact_effect = ExtResource( 3 )
 muzzle_flash_path = NodePath("PistolArmature/Skeleton 3/M1911/Muzzle/MuzzleFlash")
+equip_speed = 2.0
+unequip_speed = 2.0
+reload_speed = 2.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Equip = SubResource( 3 )
-anims/Fire = SubResource( 2 )
 anims/RESET = SubResource( 8 )
-anims/Reload = SubResource( 4 )
-anims/Unequip = SubResource( 5 )
+anims/equip = SubResource( 3 )
+anims/fire = SubResource( 2 )
+anims/reload = SubResource( 4 )
+anims/unequip = SubResource( 5 )
 
 [node name="PistolArmature" type="Spatial" parent="."]
 

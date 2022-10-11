@@ -65,17 +65,29 @@ text = "F"
 align = 1
 valign = 1
 
-[node name="Description" type="Label" parent="InteractionPrompt"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 29.5
-margin_right = 52.5
+[node name="MarginContainer" type="MarginContainer" parent="InteractionPrompt"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 29.0
+margin_top = -14.0
+margin_right = 64.0
+margin_bottom = 14.0
+
+[node name="ColorRect" type="ColorRect" parent="InteractionPrompt/MarginContainer"]
+margin_right = 52.0
+margin_bottom = 28.0
+color = Color( 0, 0, 0, 0.392157 )
+
+[node name="Description" type="Label" parent="InteractionPrompt/MarginContainer"]
+margin_top = 3.0
+margin_right = 52.0
+margin_bottom = 24.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Interact"
 align = 1
 valign = 1
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Reticle" type="ColorRect" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -86,5 +98,6 @@ margin_right = 2.0
 margin_bottom = 2.0
 
 [node name="PauseMenu" parent="." instance=ExtResource( 3 )]
+visible = false
 
 [connection signal="pause_menu_closed" from="PauseMenu" to="." method="_on_PauseMenu_pause_menu_closed"]

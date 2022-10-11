@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://scripts/player.gd" type="Script" id=1]
 [ext_resource path="res://models/char_one_handed_fire_loop.anim" type="Animation" id=2]
@@ -10,9 +10,7 @@
 [ext_resource path="res://models/char_run_loop.anim" type="Animation" id=8]
 [ext_resource path="res://scenes/ui/hud.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scripts/item_manager.gd" type="Script" id=10]
-[ext_resource path="res://scenes/items/pistol.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/items/unarmed.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/items/ak_47.tscn" type="PackedScene" id=13]
 [ext_resource path="res://models/char_walk_backwards_loop.anim" type="Animation" id=14]
 [ext_resource path="res://default_env.tres" type="Environment" id=15]
 
@@ -240,6 +238,41 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=37]
+resource_name = "char_punch"
+length = 0.2
+tracks/0/type = "transform"
+tracks/0/path = NodePath("Head/Camera/Hand")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = PoolRealArray(  )
+tracks/1/type = "value"
+tracks/1/path = NodePath("Head/Camera/Hand:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.301162, -0.33387, -0.448588 ), Vector3( -0.373237, -0.122577, -0.172737 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Head/Camera/Hand:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 18.9728, 115.403, -14.0992 ) ]
 }
 
 [sub_resource type="AnimationNodeAnimation" id=19]
@@ -639,7 +672,7 @@ target_node = NodePath("../../../Head/Camera/Hand/IKPosition")
 min_distance = 10.0
 
 [node name="RightHand" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999789, 0.0205448, -0.000420645, -0.000266373, 0.00752804, 0.999972, 0.0205481, 0.999761, -0.0075206, -0.17235, 1.58649, 0.378752 )
+transform = Transform( 0.487606, 0.854233, -0.180333, -0.230367, 0.325118, 0.917183, 0.84212, -0.405683, 0.355317, 0.349238, 1.68324, 0.349317 )
 bone_name = "Hand.R"
 
 [node name="Items" type="Spatial" parent="HumanArmature/Skeleton/RightHand"]
@@ -648,13 +681,6 @@ script = ExtResource( 10 )
 
 [node name="Unarmed" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 12 )]
 
-[node name="AK47" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 13 )]
-transform = Transform( 0.965927, 0, 0.258819, 0, 0.999999, 0, -0.258819, 0, 0.965926, -0.0307972, 0.0577995, -0.134509 )
-
-[node name="Pistol" parent="HumanArmature/Skeleton/RightHand/Items" instance=ExtResource( 11 )]
-transform = Transform( 0.999999, 0, 0, 0, 1.00001, 0, 0, 0, 1, 0, 0, 0 )
-fire_rate = 10.0
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 process_priority = 2
 anims/RESET = SubResource( 27 )
@@ -662,6 +688,7 @@ anims/char_look_down = ExtResource( 7 )
 anims/char_look_up = ExtResource( 6 )
 anims/char_one_handed_fire_loop = ExtResource( 2 )
 anims/char_one_handed_idle_loop = ExtResource( 3 )
+anims/char_punch = SubResource( 37 )
 anims/char_run_loop = ExtResource( 8 )
 anims/char_walk_backwards_loop = ExtResource( 14 )
 anims/char_walk_loop = ExtResource( 5 )
@@ -726,3 +753,5 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0 )
 enabled = true
+
+[connection signal="play_punch_animation" from="HumanArmature/Skeleton/RightHand/Items/Unarmed" to="." method="_on_Unarmed_play_punch_animation"]

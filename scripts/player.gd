@@ -233,3 +233,7 @@ func _on_fov_updated(value):
 
 func _on_mouse_sensitivity_updated(value):
 	mouse_sensitivity = value
+
+
+#func _on_Unarmed_play_punch_animation():
+#	animation_player.play("char_punch", -1.0)

@@ -32,13 +32,12 @@ func _ready():
 	#var fov_value = get_node(path_fov_value)
 	#var mouse_sensitivity_value = get_node(path_mouse_sensitivity_value)
 	
-	# When this 
+	# When this TODO
 	fullscreen_options_button.pressed = Save.game_data.fullscreen_on
 
 # If ESCAPE is pressed, hide this settings menu.
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
-		print("sus")
 		hide()
 		emit_signal("settings_menu_closed")
 
