@@ -164,35 +164,6 @@ func replace_item(item_data):
 				# If there is an item already in its slot, make sure to drop that item before adding the new one.
 				drop_item(item_data["slot_type"])
 				add_item(item_data)
-		
-	"""
-	# Checks whether there is any empty slot available.
-	# If there is, add the new item to that empty slot.
-	for i in items:
-		if is_instance_valid(items[i]) == false:
-			add_item(item_data)
-			return
-	
-	# TODO: take item's correct slot type into account
-	# If we are unarmed, but all slots are full, and pick up an item,
-	# the item in the primary slot will be dropped and replaced with the new item.
-	if current_item.name == "Unarmed":
-		items["Primary"].drop_item()
-		yield(get_tree(), "idle_frame") # Wait a frame to complete deletion process of previous item.
-		add_item(item_data)
-	
-	# If the item to be picked up and the current item are the same,
-	# then the ammunition of the new item is added to the currently-equipped item.
-	elif current_item.item_name == item_data["Name"]:
-		add_ammo(item_data["Ammo"] + item_data["ExtraAmmo"])
-	
-	# If we already have an equipped item,
-	# then we drop it and equip the new item.
-	else:
-		drop_item()
-		yield(get_tree(), "idle_frame") # Wait a frame to complete deletion process of previous item.
-		add_item(item_data)
-	"""
 
 # Will be called from player.gd.
 # By default, the slot we want to drop an item from is the one currently equipped.
@@ -245,24 +216,29 @@ func fire_stop():
 	current_item.fire_stop()
 
 func reload():
-	# We can only reload if we are not in the middle of changing out item.
+	# We can only reload if we are not in the middle of swapping items.
 	if not changing_item:
 		current_item.reload()
 
 # For ammo pickups.
 func add_ammo(amount, item_data=null, update_hud=true):
-	# If there is no item defined via item_data, just add the ammo to whatever
-	# we have equipped.
-	if is_instance_valid(item_data):
+	# Check if this ammo should be added to a particular item we have.
+	if item_data != null:
 		# We cannot add ammo to a null item, or one that is melee.
 		if is_instance_valid(items[item_data["slot_type"]]) == false || item_data["slot_type"] == "Melee":
 			return false
 		else:
 			items[item_data["slot_type"]].update_ammo("add", amount, update_hud)
 			return true
+	# If there is no item defined via item_data, just add the ammo to whatever
+	# we have equipped. Used for ammo pickup boxes.
 	else:
-		current_item.update_ammo("add", amount, update_hud)
-	return true
+		# We cannot add ammo to a null or deleted item, or one that is melee.
+		if is_instance_valid(items[current_item_slot]) == false || current_item_slot == "Melee":
+			return false
+		else:
+			current_item.update_ammo("add", amount, update_hud)
+			return true
 
 # Interaction prompt.
 func show_interaction_prompt(item_data):

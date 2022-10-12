@@ -39,8 +39,6 @@ func update_item_ui(item_data, item_slot):
 	slot_ui.text = item_slot
 	display_ui.texture = item_data["image"]
 	
-	print(item_data["slot_type"])
-	
 	# If the item is a melee weapon, just show the name.
 	if item_data["slot_type"] == "Melee" || item_data["slot_type"] == "Any":
 		item_ui.text = item_data["name"]
