@@ -1,4 +1,4 @@
-# level_2_game_development
-Level 2 game development project, by Kael Robertson.
+# Level 2 Game Development
+by Kael Robertson.
 
 Made with Godot 3.5.
