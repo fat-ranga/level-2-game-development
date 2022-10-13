@@ -16,15 +16,14 @@ var unequipped_item = false
 
 var item_index = 0 # For switching items via scroll wheel.
 
-onready var reach_ray = owner.get_node("Head/Camera/Reach")
+onready var camera = owner.get_node("Head/Camera")
 var reach_ray_length = 5.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	hud = owner.get_node("Head/Camera/ViewportContainer/HUD")
-	# Add exception of player to the shooting and reach raycast.
+	# Add exception of player to the shooting raycast.
 	owner.get_node("Head/Camera/AimCast").add_exception(owner)
-	owner.get_node("Head/Camera/Reach").add_exception(owner)
 	
 	# Dictionary of all items in the game.
 	all_items = {
@@ -271,8 +270,8 @@ func hide_interaction_prompt():
 # Searches for item pickups, and based on player input executes further tasks
 # (will be called from player.gd)
 func process_item_pickup():
-	var from = reach_ray.global_transform.origin
-	var to = reach_ray.global_transform.origin - reach_ray.global_transform.basis.z.normalized() * reach_ray_length
+	var from = camera.global_transform.origin
+	var to = camera.global_transform.origin - camera.global_transform.basis.z.normalized() * reach_ray_length
 	var space_state = get_world().direct_space_state
 	# 524288 is the value of the item pickup collision layer.
 	var collision = space_state.intersect_ray(from, to, [owner], 524288)

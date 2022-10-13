@@ -19,7 +19,7 @@ export var ammo_in_magazine = 15
 export var extra_ammo = 30
 onready var magazine_size = ammo_in_magazine
 
-export var damage = 10
+export var damage = 15
 export var fire_rate = 1.0 # Non-automatic weapons also consider this.
 export var projectiles_per_shot = 1
 export var randomness = 0.5
@@ -74,6 +74,9 @@ func fire_bullet():
 		# Spawn the hit effect a little bit away from the surface to reduce clipping.
 		var impact_position = (ray.get_collision_point()) + (ray.get_collision_normal() * 0.2)
 		impact = Global.instantiate_node(impact_effect, impact_position)
+		var hit = ray.get_collider()
+		if hit.is_in_group("Enemy"):
+			hit.damage(damage)
 		# TODO: delete these, or better, use a pool instead
 
 func reload():

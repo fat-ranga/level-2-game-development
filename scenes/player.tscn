@@ -346,10 +346,10 @@ node_connections = [ "output", 0, "one_handed_fire_weapon", "one_handed_fire_wea
 radius = 0.388299
 height = 1.3417
 
-[node name="Player" type="KinematicBody"]
+[node name="Player" type="KinematicBody" groups=["Player"]]
 process_priority = 2
 script = ExtResource( 1 )
-ads_position = Vector3( 0.013, -0.15, -0.449 )
+ads_position = Vector3( 0.024, -0.2, -0.449 )
 
 [node name="HumanArmature" type="Spatial" parent="."]
 process_priority = 1
@@ -672,7 +672,7 @@ target_node = NodePath("../../../Head/Camera/Hand/IKPosition")
 min_distance = 10.0
 
 [node name="RightHand" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999787, 0.0206135, -0.000264049, -0.000107437, 0.00760582, 0.999971, 0.0206159, 0.999759, -0.00760154, -0.172237, 1.58672, 0.378653 )
+transform = Transform( -0.999789, 0.0205389, -0.000396207, -0.000242412, 0.0075027, 0.999972, 0.0205422, 0.999761, -0.00749582, -0.172406, 1.58656, 0.378797 )
 bone_name = "Hand.R"
 
 [node name="Items" type="Spatial" parent="HumanArmature/Skeleton/RightHand"]
@@ -711,6 +711,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.81545, 0.187942 )
 
 [node name="Camera" type="Camera" parent="Head"]
 transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0 )
+cull_mask = 1048573
 fov = 90.0
 near = 0.1
 far = 2000.0
@@ -738,11 +739,6 @@ far = 10.0
 [node name="AimCast" type="RayCast" parent="Head/Camera"]
 enabled = true
 cast_to = Vector3( 0, 0, -1000 )
-
-[node name="Reach" type="RayCast" parent="Head/Camera"]
-enabled = true
-cast_to = Vector3( 0, 0, -5 )
-collide_with_areas = true
 
 [node name="Hand" type="Spatial" parent="Head/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.301162, -0.33387, -0.448588 )

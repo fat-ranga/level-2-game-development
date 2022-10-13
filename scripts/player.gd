@@ -43,7 +43,6 @@ onready var head = $Head
 onready var camera = $Head/Camera
 onready var first_person_camera = $Head/Camera/ViewportContainer/Viewport/FirstPersonCamera
 onready var aimcast = $Head/Camera/AimCast # Raycast used for close-range firefights.
-onready var reach = $Head/Camera/Reach # Raycast used for interacting with things.
 onready var item_manager = $HumanArmature/Skeleton/RightHand/Items
 
 # Rigging and animation.

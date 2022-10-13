@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/enemy.gd" type="Script" id=1]
 [ext_resource path="res://models/Jack.material" type="Material" id=2]
@@ -1930,10 +1930,15 @@ tracks/59/keys = PoolRealArray( 0, 1, -0.000631704, 0.00342023, 0.000300825, -0.
 radius = 0.308144
 height = 1.36264
 
-[node name="EnemyRecruit" type="KinematicBody"]
+[sub_resource type="CylinderShape" id=8]
+height = 4.57886
+radius = 3.32157
+
+[node name="EnemyRecruit" type="KinematicBody" groups=["Enemy"]]
 script = ExtResource( 1 )
 
 [node name="HumanArmature" type="Spatial" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 
 [node name="Skeleton" type="Skeleton" parent="HumanArmature"]
 bones/0/name = "Pelvis"
@@ -2250,3 +2255,26 @@ anims/char_walk_loop = SubResource( 6 )
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.994892, 0 )
 shape = SubResource( 7 )
+
+[node name="SightRange" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="SightRange"]
+shape = SubResource( 8 )
+
+[node name="Eyes" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.84749, 0 )
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[node name="NavigationTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="RayCast" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.84749, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, -3 )
+
+[connection signal="body_entered" from="SightRange" to="." method="_on_SightRange_body_entered"]
+[connection signal="body_exited" from="SightRange" to="." method="_on_SightRange_body_exited"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="NavigationTimer" to="." method="_on_NavigationTimer_timeout"]
