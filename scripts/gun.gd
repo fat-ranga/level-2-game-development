@@ -22,7 +22,7 @@ onready var magazine_size = ammo_in_magazine
 export var damage = 15
 export var fire_rate = 1.0 # Non-automatic weapons also consider this.
 export var projectiles_per_shot = 1
-export var projectile_speed = 1.7
+export var projectile_speed = 2.1
 export var randomness = 0.5
 export var raycast_distance = 5 # Distance beyond which we generate projectiles when fired.
 
@@ -46,18 +46,26 @@ var projectiles = []
 # So we can get the correct last position for each bullet.
 var projectile_index = 0
 # So that the projectile isn't clipping with the gun when spawned
-var projectile_offset = 3
+var projectile_offset = 3.5
 
 
 func _ready():
 	animation_player = $AnimationPlayer
 	animation_player.connect("animation_finished", self, "on_animation_finish")
+	muzzle_flash.visible = false
 
 func _process(delta):
-	process_projectiles()
+	process_projectiles(delta)
 
-func process_projectiles():
+func process_projectiles(delta):
 	for bullet in projectiles:
+		# Delete bullet if it's existed for too long.
+		bullet.lifetime -= delta
+		if bullet.lifetime < 0:
+			# Delete the bullet and remove it from the array
+			bullet.queue_free()
+			projectiles.erase(bullet)
+		
 		bullet.global_translate(-bullet.transform.basis.z * projectile_speed)
 		var space_state = get_world().direct_space_state
 		
@@ -81,6 +89,7 @@ func process_projectiles():
 
 # Will be called from the animation track.
 func fire_bullet():
+	muzzle_flash.visible = true
 	muzzle_flash_animation_player.play("scale_flash")
 	update_ammo("consume")
 	
@@ -94,6 +103,7 @@ func fire_bullet():
 		var distance = origin.distance_to(collision_point)
 		
 		if distance > raycast_distance:
+			#for i in projectiles_per_shot:
 			var projectile = Global.instantiate_node(bullet_projectile, muzzle.global_transform.origin)
 			projectile.look_at(collision_point, Vector3.UP)
 			
@@ -117,8 +127,8 @@ func fire_bullet():
 			else:
 				impact = Global.instantiate_node(dust_impact, impact_position)
 	else:
+		# Set the point the bullet looks at to a point the ray is facing.
 		var far_away_point = ray.global_transform.origin + -ray.global_transform.basis.z * 100
-		print(far_away_point)
 		var projectile = Global.instantiate_node(bullet_projectile, muzzle.global_transform.origin)
 		projectile.look_at(far_away_point, Vector3.UP)
 		

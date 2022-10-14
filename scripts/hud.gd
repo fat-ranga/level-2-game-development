@@ -1,5 +1,6 @@
 extends Control
 
+# References to all our UI stuff in this HUD.
 var item_ui
 var health_ui
 var display_ui
@@ -8,6 +9,7 @@ var background
 var interaction_prompt
 var interaction_prompt_key
 var interaction_prompt_description
+var reticle
 
 onready var pause_menu = $PauseMenu
 
@@ -20,6 +22,7 @@ func _enter_tree():
 	interaction_prompt = $InteractionPrompt
 	interaction_prompt_key = $InteractionPrompt/Key
 	interaction_prompt_description = $InteractionPrompt/MarginContainer/Description
+	reticle = $Reticle
 	
 
 func _ready():
@@ -30,8 +33,10 @@ func _ready():
 func _input(event):
 	# If escape key is pressed, open the pause menu and pause the game.
 	if event.is_action_pressed("ui_cancel"):
+		
 		hide_interaction_prompt()
 		background.hide()
+		reticle.hide()
 		pause_menu.show()
 		pause_menu.set_paused(true)
 
@@ -49,12 +54,14 @@ func update_item_ui(item_data, item_slot):
 
 # Show/hide interaction prompt.
 func show_interaction_prompt(description="Interact"):
+	reticle.hide()
 	interaction_prompt.visible = true
 	interaction_prompt_key.text = get_key_from_action("interact") # In case input settings are changed.
 	interaction_prompt_description.text = description # By default, this is 'Interact'.
 
 func hide_interaction_prompt():
 	interaction_prompt.visible = false
+	reticle.show()
 
 # Gets the keyboard key from an action.
 # This is so that the interaction prompt can show what key to press in case the input
@@ -71,3 +78,4 @@ func get_key_from_action(action):
 # If the pause menu is closed, show all our UI again.
 func _on_PauseMenu_pause_menu_closed():
 	background.show()
+	reticle.show()

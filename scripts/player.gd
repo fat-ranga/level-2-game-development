@@ -3,6 +3,11 @@ extends KinematicBody
 # Movement.
 var walk_speed: float = 5.0
 var sprint_speed: float = 10.0
+var crouch_speed: float = 0.5
+var crouch_transition_speed: float = 20.0
+var regular_height: float = 1.342
+var crouch_height: float = 0.25
+
 var air_acceleration: float = 2.0
 var regular_acceleration: float = 10.0
 var h_acceleration: float = 10.0 # Determined by either air or regular acceleration.
@@ -15,10 +20,10 @@ var mouse_sensitivity: float = 0.06
 # Hand sway.
 var mouse_movement
 var sway_threshold = 5
-var sway_lerp = 5
-var sway_factor_location: float = 0.1
-var sway_factor_rotation: float = 0.8
+var sway_speed = 0.005
+var sway_factor = 1
 var original_hand_position = Vector3.ZERO
+var relative_mouse_movement = Vector2.ZERO
 
 # Aim down sights (ADS).
 export var ads_position = Vector3.ZERO
@@ -40,6 +45,8 @@ var movement: Vector3 = Vector3()
 # References to other nodes in our player scene.
 onready var ground_check = $GroundCheck
 onready var head = $Head
+onready var head_bonker = $HeadBonker
+onready var collision_shape = $CollisionShape
 onready var camera = $Head/Camera
 onready var first_person_camera = $Head/Camera/ViewportContainer/Viewport/FirstPersonCamera
 onready var aimcast = $Head/Camera/AimCast # Raycast used for close-range firefights.
@@ -89,7 +96,7 @@ func _input(event):
 		head.rotation.x = clamp(head.rotation.x, deg2rad(-90), deg2rad(80))
 		
 		# Get relative mouse movement for hand sway.
-		mouse_movement = event.relative.x
+		relative_mouse_movement = event.relative
 	
 	if event is InputEventMouseButton:
 		if event.pressed:
@@ -145,6 +152,11 @@ func handle_movement(delta):
 	# Which way we are going to move.
 	direction = Vector3()
 	
+	var is_head_bonked = false
+	
+	if head_bonker.is_colliding():
+		is_head_bonked = true
+	
 	# Check if we're on the ground or not.
 	if ground_check.is_colliding():
 		full_contact = true
@@ -174,11 +186,21 @@ func handle_movement(delta):
 	
 	# Ensure we aren't faster when moving diagonally.
 	direction = direction.normalized()
+	
 	# Smooth acceleration and sprinting.
 	if Input.is_action_pressed("sprint"):
 		h_velocity = h_velocity.linear_interpolate(direction * sprint_speed, h_acceleration * delta)
 	else:
 		h_velocity = h_velocity.linear_interpolate(direction * walk_speed, h_acceleration * delta)
+	
+	if Input.is_action_pressed("crouch"):
+		collision_shape.shape.height -= crouch_transition_speed
+		h_velocity = h_velocity.linear_interpolate(direction * crouch_speed, h_acceleration * delta)
+	elif not is_head_bonked:
+		collision_shape.shape.height += crouch_transition_speed
+	# Crouch and regular height determine the shortest and highest we can stand, respectively.
+	collision_shape.shape.height = clamp(collision_shape.shape.height, crouch_height, regular_height)
+	
 	# Movement vector calculated from direction and gravity.
 	movement.z = h_velocity.z + gravity_vector.z
 	movement.x = h_velocity.x + gravity_vector.x
@@ -196,6 +218,14 @@ func handle_hand_sway(delta):
 		aim_down_sights(true, delta)
 	else:
 		aim_down_sights(false, delta)
+	
+	var location = Vector3(
+		original_hand_position.x - relative_mouse_movement.x * 5,
+		original_hand_position.y + relative_mouse_movement.y * 5,
+		original_hand_position.z
+	)
+	hand.translation = hand.translation.linear_interpolate(location, delta * sway_speed)
+	relative_mouse_movement = Vector2.ZERO
 
 func handle_animation():
 	# TODO check if moving foward abckwadfs

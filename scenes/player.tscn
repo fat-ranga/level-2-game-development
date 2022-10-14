@@ -337,7 +337,7 @@ nodes/one_handed_animation/node = SubResource( 16 )
 nodes/one_handed_animation/position = Vector2( -880, 100 )
 nodes/one_handed_fire_weapon/node = SubResource( 29 )
 nodes/one_handed_fire_weapon/position = Vector2( -320, 60 )
-node_connections = [ "output", 0, "one_handed_fire_weapon", "one_handed_fire_weapon", 0, "IdleWalkRun", "one_handed_fire_weapon", 1, "one_handed_animation" ]
+node_connections = [ "one_handed_fire_weapon", 0, "IdleWalkRun", "one_handed_fire_weapon", 1, "one_handed_animation", "output", 0, "one_handed_fire_weapon" ]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=33]
 
@@ -671,7 +671,7 @@ target_node = NodePath("../../../Head/Camera/Hand/IKPosition")
 min_distance = 10.0
 
 [node name="RightHand" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999791, 0.020436, -0.000392303, -0.000237107, 0.00760609, 0.999971, 0.0204394, 0.999763, -0.00759917, -0.172403, 1.5865, 0.378921 )
+transform = Transform( -0.999792, 0.020419, -0.000349447, -0.000194162, 0.00762695, 0.999971, 0.020422, 0.999763, -0.00762099, -0.172452, 1.58666, 0.378709 )
 bone_name = "Hand.R"
 
 [node name="Items" type="Spatial" parent="HumanArmature/Skeleton/RightHand"]
@@ -702,7 +702,7 @@ parameters/StateMachine/playback = SubResource( 33 )
 parameters/one_handed_fire_weapon/active = false
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.924111, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.07568, 0 )
 shape = SubResource( 18 )
 
 [node name="Head" type="Spatial" parent="."]
@@ -747,5 +747,10 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0
 [node name="GroundCheck" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0 )
 enabled = true
+
+[node name="HeadBonker" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.88731, 0 )
+enabled = true
+cast_to = Vector3( 0, 0.4, 0 )
 
 [connection signal="play_punch_animation" from="HumanArmature/Skeleton/RightHand/Items/Unarmed" to="." method="_on_Unarmed_play_punch_animation"]

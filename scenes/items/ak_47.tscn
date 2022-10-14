@@ -204,4 +204,5 @@ material/0 = ExtResource( 7 )
 transform = Transform( 1, 5.63887e-11, 0, 3.63798e-12, 1, 0, -5.82077e-11, 0, 1, 0, 0.038, -0.605464 )
 
 [node name="MuzzleFlash" parent="AK_Armature/Skeleton/AK-47/Muzzle" instance=ExtResource( 2 )]
+visible = false
 layers = 2

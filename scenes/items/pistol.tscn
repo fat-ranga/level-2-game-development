@@ -282,4 +282,5 @@ skin = SubResource( 7 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.034, -0.169244 )
 
 [node name="MuzzleFlash" parent="PistolArmature/Skeleton 3/M1911/Muzzle" instance=ExtResource( 2 )]
+visible = false
 layers = 2
