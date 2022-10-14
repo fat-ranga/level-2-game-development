@@ -1,9 +1,23 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/hud.gd" type="Script" id=1]
 [ext_resource path="res://joe_rumbi.theme" type="Theme" id=2]
 [ext_resource path="res://scenes/ui/pause_menu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://textures/ui/crosshair.png" type="Texture" id=4]
+[ext_resource path="res://textures/ui/ak_icon.png" type="Texture" id=5]
+[ext_resource path="res://textures/ui/health_icon_colour.png" type="Texture" id=6]
+[ext_resource path="res://fonts/Acme-Regular.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://textures/ui/health_icon_outline.png" type="Texture" id=8]
+
+[sub_resource type="DynamicFont" id=2]
+size = 45
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 33
+use_filter = true
+font_data = ExtResource( 7 )
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
@@ -26,39 +40,74 @@ expand = true
 [node name="Background" type="ColorRect" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -70.0
-margin_right = 238.0
-color = Color( 0.109804, 0.109804, 0.109804, 1 )
+margin_top = -119.0
+margin_right = 391.0
+color = Color( 0, 0, 0, 0.470588 )
 
-[node name="HealthUI" type="Label" parent="Background"]
-margin_left = 115.0
-margin_top = 10.0
-margin_right = 214.0
-margin_bottom = 36.0
-text = "Health"
-
-[node name="ItemUI" type="Label" parent="Background"]
-margin_left = 116.0
-margin_top = 38.0
-margin_right = 218.0
-margin_bottom = 66.0
-text = "Pistol:"
-
-[node name="Display" type="ColorRect" parent="Background"]
-margin_right = 92.0
-margin_bottom = 69.0
-color = Color( 0.337255, 0.337255, 0.337255, 1 )
-
-[node name="ItemSlot" type="Label" parent="Background/Display"]
-margin_right = 42.0
-margin_bottom = 29.0
-text = "1"
-
-[node name="ItemTexture" type="TextureRect" parent="Background/Display"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="HealthTexture" type="TextureRect" parent="Background"]
+self_modulate = Color( 0.458824, 0.458824, 0.458824, 1 )
+margin_right = 99.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
+
+[node name="HealthUI" type="Label" parent="Background/HealthTexture"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -47.0
+margin_top = -29.0
+margin_right = 47.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 2 )
+text = "100"
+align = 1
+valign = 1
+
+[node name="TextureRect" type="TextureRect" parent="Background/HealthTexture"]
+visible = false
+modulate = Color( 0.317647, 0.317647, 0.317647, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 6
+
+[node name="ItemTexture" type="TextureRect" parent="Background"]
+margin_left = 95.0
+margin_right = 278.0
+margin_bottom = 103.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+
+[node name="ItemSlot" type="Label" parent="Background/ItemTexture"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -46.0
+margin_top = -14.0
+margin_right = 46.0
+text = "Primary"
+align = 1
+valign = 1
+
+[node name="ItemUI" type="Label" parent="Background"]
+margin_left = 274.0
+margin_right = 390.0
+margin_bottom = 119.0
+grow_horizontal = 0
+size_flags_vertical = 5
+custom_fonts/font = SubResource( 1 )
+text = "30 / 120"
+align = 1
+valign = 1
 
 [node name="InteractionPrompt" type="ColorRect" parent="."]
 anchor_left = 0.5
@@ -83,18 +132,17 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 29.0
 margin_top = -14.0
-margin_right = 64.0
+margin_right = 101.0
 margin_bottom = 14.0
 
 [node name="ColorRect" type="ColorRect" parent="InteractionPrompt/MarginContainer"]
-margin_right = 52.0
+margin_right = 72.0
 margin_bottom = 28.0
 color = Color( 0, 0, 0, 0.392157 )
 
 [node name="Description" type="Label" parent="InteractionPrompt/MarginContainer"]
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 24.0
+margin_right = 72.0
+margin_bottom = 28.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Interact"
 align = 1

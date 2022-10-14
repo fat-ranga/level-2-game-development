@@ -15,9 +15,9 @@ onready var pause_menu = $PauseMenu
 
 func _enter_tree():
 	item_ui = $Background/ItemUI
-	health_ui = $Background/ItemUI
-	display_ui = $Background/Display/ItemTexture
-	slot_ui = $Background/Display/ItemSlot
+	health_ui = $Background/HealthTexture/HealthUI
+	display_ui = $Background/ItemTexture
+	slot_ui = $Background/ItemTexture/ItemSlot
 	background = $Background
 	interaction_prompt = $InteractionPrompt
 	interaction_prompt_key = $InteractionPrompt/Key
@@ -40,8 +40,11 @@ func _input(event):
 		pause_menu.show()
 		pause_menu.set_paused(true)
 
+func update_health_ui(amount):
+	health_ui.text = str(amount)
+
 func update_item_ui(item_data, item_slot):
-	slot_ui.text = item_slot
+	slot_ui.text = item_slot + ": " + item_data["name"]
 	display_ui.texture = item_data["image"]
 	
 	# If the item is a melee weapon, just show the name.
@@ -50,7 +53,7 @@ func update_item_ui(item_data, item_slot):
 		return
 	
 	# Otherwise, it must be a weapon with ammunition.
-	item_ui.text = item_data["name"] + ": " + item_data["ammo"] + "/" + item_data["extra_ammo"]
+	item_ui.text = item_data["ammo"] + " / " + item_data["extra_ammo"]
 
 # Show/hide interaction prompt.
 func show_interaction_prompt(description="Interact"):

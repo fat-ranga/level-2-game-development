@@ -166,7 +166,6 @@ light_color = Color( 0.980392, 0.92549, 0.886275, 1 )
 light_energy = 1.5
 light_specular = 2.0
 light_cull_mask = 4294967291
-shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( -0.642747, 0, 0.766078, 0, 1, 0, -0.766078, 0, -0.642747, -155.116, 1.78486, 86.4193 )

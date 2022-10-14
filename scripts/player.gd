@@ -1,5 +1,14 @@
 extends KinematicBody
 
+# For fixing physics jitter via interpolation.
+const PHYSICS_FRAMERATE = 60
+const JITTER_LERP_WEIGHT = 50
+var original_head_transform
+
+# Health.
+var max_health = 100
+var current_health
+
 # Movement.
 var walk_speed: float = 5.0
 var sprint_speed: float = 10.0
@@ -51,6 +60,7 @@ onready var camera = $Head/Camera
 onready var first_person_camera = $Head/Camera/ViewportContainer/Viewport/FirstPersonCamera
 onready var aimcast = $Head/Camera/AimCast # Raycast used for close-range firefights.
 onready var item_manager = $HumanArmature/Skeleton/RightHand/Items
+onready var hud = $Head/Camera/ViewportContainer/HUD
 
 # Rigging and animation.
 onready var hand = $Head/Camera/Hand
@@ -60,6 +70,13 @@ onready var animation_tree = $AnimationTree
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Set the original head position. For fixing jitter.
+	original_head_transform = head.translation
+	
+	# Set our current health to whatever ouw maximum health is.
+	current_health = max_health
+	hud.update_health_ui(current_health)
+	
 	# Keep the mouse positioned at screen centre.
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
@@ -107,6 +124,8 @@ func _input(event):
 					item_manager.previous_item()
 
 func _process(delta):
+	fix_jitter(delta)
+	
 	# Set the HUD/first person camera to the same position as the actual camera.
 	first_person_camera.global_transform = camera.global_transform
 	
@@ -116,6 +135,28 @@ func _process(delta):
 
 func _physics_process(delta):
 	handle_movement(delta)
+
+func fix_jitter(delta):
+	var fps = Engine.get_frames_per_second()
+	# Slices the direction vector into little pieces, which get smaller as FPS increases.
+	var lerp_interval = direction/fps
+	# The position we should actually be at is our physics position plus these little slices.
+	var lerp_position = global_transform.origin + lerp_interval
+	var regular_position = global_transform.origin
+	
+	# If the FPS is greater than the physics framerate, then we interpolate
+	# to where the head and stuff should be in any _process frame.
+	# Otherwise, we don't bother with any interpolation.
+	if fps > PHYSICS_FRAMERATE:
+		head.set_as_toplevel(true) # Move independently of collider.
+		head.global_transform.origin = head.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
+		skeleton.set_as_toplevel(true)
+		skeleton.global_transform.origin = skeleton.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
+	else:
+		head.global_transform = head.global_transform
+		head.set_as_toplevel(false)
+		skeleton.global_transform = skeleton.global_transform
+		skeleton.set_as_toplevel(false)
 
 func aim_down_sights(value:bool, delta):
 	is_ads = value
@@ -177,7 +218,7 @@ func handle_movement(delta):
 		h_acceleration = regular_acceleration
 	
 	# Jumping.
-	if Input.is_action_pressed("jump") and (is_on_floor() or ground_check.is_colliding()):
+	if Input.is_action_pressed("jump") and (is_on_floor() or ground_check.is_colliding()) and not is_head_bonked:
 		gravity_vector = Vector3.UP * jump_power
 	
 	# Forwards/backwards and left/right input and movement.
@@ -263,6 +304,10 @@ func _on_fov_updated(value):
 func _on_mouse_sensitivity_updated(value):
 	mouse_sensitivity = value
 
+func damage(damage):
+	current_health -= (damage)
+	hud.update_health_ui(current_health)
+	
 
 #func _on_Unarmed_play_punch_animation():
 #	animation_player.play("char_punch", -1.0)
