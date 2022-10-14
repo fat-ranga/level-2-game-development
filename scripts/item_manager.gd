@@ -29,7 +29,8 @@ func _ready():
 	all_items = {
 		"Unarmed": preload("res://scenes/items/unarmed.tscn"),
 		"AK-47": preload("res://scenes/items/ak_47.tscn"),
-		"M1911": preload("res://scenes/items/pistol.tscn")
+		"M1911": preload("res://scenes/items/pistol.tscn"),
+		"SPAS-12": preload("res://scenes/items/spas_12.tscn")
 	}
 	
 	# Dictionary of the items we are currently carrying.

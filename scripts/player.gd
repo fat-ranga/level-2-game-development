@@ -153,10 +153,14 @@ func fix_jitter(delta):
 		skeleton.set_as_toplevel(true)
 		skeleton.global_transform.origin = skeleton.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
 	else:
-		head.global_transform = head.global_transform
-		head.set_as_toplevel(false)
-		skeleton.global_transform = skeleton.global_transform
-		skeleton.set_as_toplevel(false)
+#		head.global_transform = head.global_transform
+#		head.set_as_toplevel(false)
+#		skeleton.global_transform = skeleton.global_transform
+#		skeleton.set_as_toplevel(false)
+		head.set_as_toplevel(true) # Move independently of collider.
+		head.global_transform.origin = head.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
+		skeleton.set_as_toplevel(true)
+		skeleton.global_transform.origin = skeleton.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
 
 func aim_down_sights(value:bool, delta):
 	is_ads = value

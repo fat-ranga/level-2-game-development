@@ -38,7 +38,7 @@ bind/2/bone = -1
 bind/2/pose = Transform( -0.999996, -0.00102693, 0.00242388, 4.65603e-07, -0.92084, -0.389941, 0.00263245, -0.389939, 0.920837, -1.02297e-06, 0.00379573, -0.000389356 )
 
 [sub_resource type="BoxShape" id=8]
-extents = Vector3( 0.0529892, 0.124413, 0.527086 )
+extents = Vector3( 0.0776286, 0.124413, 0.527086 )
 
 [node name="AK47Pickup" type="RigidBody"]
 collision_layer = 524288

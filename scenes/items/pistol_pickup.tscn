@@ -37,7 +37,7 @@ bind/3/pose = Transform( 5.70414e-07, -0.350969, -0.936387, 3.40842e-07, -0.9363
 [sub_resource type="BoxShape" id=8]
 extents = Vector3( 0.0450406, 0.101878, 0.151503 )
 
-[node name="Pistol" type="RigidBody"]
+[node name="PistolPickup" type="RigidBody"]
 collision_layer = 524288
 script = ExtResource( 1 )
 item_name = "M1911"
