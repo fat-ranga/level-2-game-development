@@ -21,7 +21,7 @@ onready var magazine_size = ammo_in_magazine
 
 export var damage = 15
 export var fire_rate = 1.0 # Non-automatic weapons also consider this.
-export var projectiles_per_shot = 1
+export var projectiles_per_shot = 5
 export var projectile_speed = 2.1
 export var randomness = 0.5
 export var raycast_distance = 5 # Distance beyond which we generate projectiles when fired.
@@ -50,6 +50,9 @@ var projectile_offset = 3.5
 
 
 func _ready():
+	# Apparently this allows random functions to work.
+	randomize()
+	
 	animation_player = $AnimationPlayer
 	animation_player.connect("animation_finished", self, "on_animation_finish")
 	muzzle_flash.visible = false
@@ -59,6 +62,9 @@ func _process(delta):
 
 func process_projectiles(delta):
 	for bullet in projectiles:
+		# Get the last position of the bullet, from which we can draw the ray.
+		bullet.last_position = bullet.translation
+		
 		# Delete bullet if it's existed for too long.
 		bullet.lifetime -= delta
 		if bullet.lifetime < 0:
@@ -103,43 +109,55 @@ func fire_bullet():
 		var distance = origin.distance_to(collision_point)
 		
 		if distance > raycast_distance:
-			#for i in projectiles_per_shot:
+			for i in projectiles_per_shot:
+				var projectile = Global.instantiate_node(bullet_projectile, muzzle.global_transform.origin)
+				projectile.look_at(collision_point, Vector3.UP)
+				
+				# Last position is by default at the end of the gun.
+				projectile.last_position = muzzle.global_transform.origin
+				
+				# Add a bit of randomisation.
+				projectile.rotation += Vector3(rand_range(randomness, -randomness),
+				rand_range(randomness, -randomness),
+				rand_range(randomness, -randomness))
+				
+				# Make the projectile visible after the offset has been applied.
+				projectile.global_translate(-projectile.transform.basis.z * projectile_offset)
+				projectile.visible = true
+				
+				projectiles.append(projectile)
+		else:
+			for i in projectiles_per_shot:
+				# TODO delete these
+				var impact
+				# Spawn the hit effect a little bit away from the surface to reduce clipping.
+				var impact_position = (ray.get_collision_point()) + (ray.get_collision_normal() * 0.2)
+				var hit = ray.get_collider()
+				if hit.is_in_group("Enemy"):
+					hit.damage(damage)
+					impact = Global.instantiate_node(blood_impact, impact_position)
+				else:
+					impact = Global.instantiate_node(dust_impact, impact_position)
+	else:
+		for i in projectiles_per_shot:
+			# Set the point the bullet looks at to a point the ray is facing.
+			var far_away_point = ray.global_transform.origin + -ray.global_transform.basis.z * 100
 			var projectile = Global.instantiate_node(bullet_projectile, muzzle.global_transform.origin)
-			projectile.look_at(collision_point, Vector3.UP)
+			projectile.look_at(far_away_point, Vector3.UP)
+			
+			# Last position is by default at the end of the gun.
+			projectile.last_position = muzzle.global_transform.origin
+			
+			# Add a bit of randomisation.
+			projectile.rotation+= Vector3(rand_range(randomness, -randomness),
+			rand_range(randomness, -randomness),
+			rand_range(randomness, -randomness))
 			
 			# Make the projectile visible after the offset has been applied.
 			projectile.global_translate(-projectile.transform.basis.z * projectile_offset)
 			projectile.visible = true
 			
-			# Last position is by default at the end of the gun.
-			projectile.last_position = muzzle.global_transform.origin
-			
 			projectiles.append(projectile)
-		else:
-			# TODO delete these
-			var impact
-			# Spawn the hit effect a little bit away from the surface to reduce clipping.
-			var impact_position = (ray.get_collision_point()) + (ray.get_collision_normal() * 0.2)
-			var hit = ray.get_collider()
-			if hit.is_in_group("Enemy"):
-				hit.damage(damage)
-				impact = Global.instantiate_node(blood_impact, impact_position)
-			else:
-				impact = Global.instantiate_node(dust_impact, impact_position)
-	else:
-		# Set the point the bullet looks at to a point the ray is facing.
-		var far_away_point = ray.global_transform.origin + -ray.global_transform.basis.z * 100
-		var projectile = Global.instantiate_node(bullet_projectile, muzzle.global_transform.origin)
-		projectile.look_at(far_away_point, Vector3.UP)
-		
-		# Make the projectile visible after the offset has been applied.
-		projectile.global_translate(-projectile.transform.basis.z * projectile_offset)
-		projectile.visible = true
-		
-		# Last position is by default at the end of the gun.
-		projectile.last_position = muzzle.global_transform.origin
-		
-		projectiles.append(projectile)
 
 func fire():
 	if is_automatic:

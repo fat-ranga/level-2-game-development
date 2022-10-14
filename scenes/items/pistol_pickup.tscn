@@ -35,7 +35,7 @@ bind/3/bone = -1
 bind/3/pose = Transform( 5.70414e-07, -0.350969, -0.936387, 3.40842e-07, -0.936387, 0.350969, -1, -5.19357e-07, -4.14503e-07, 0.0301751, -0.0261629, 5.70953e-09 )
 
 [sub_resource type="BoxShape" id=8]
-extents = Vector3( 0.0166077, 0.0764228, 0.128076 )
+extents = Vector3( 0.0450406, 0.101878, 0.151503 )
 
 [node name="Pistol" type="RigidBody"]
 collision_layer = 524288
