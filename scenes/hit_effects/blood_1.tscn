@@ -57,7 +57,7 @@ tracks/1/keys = {
 "values": [ 1.0, 0.0 ]
 }
 
-[node name="blood_1" type="Sprite3D"]
+[node name="Blood_1" type="Sprite3D"]
 opacity = 0.0
 pixel_size = 0.03
 billboard = 1

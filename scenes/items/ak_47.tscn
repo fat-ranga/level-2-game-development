@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/gun.gd" type="Script" id=1]
 [ext_resource path="res://scenes/muzzle_flashes/ar_muzzle_flash.tscn" type="PackedScene" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://textures/ui/ak_icon.png" type="Texture" id=5]
 [ext_resource path="res://scenes/items/ak_47_pickup.tscn" type="PackedScene" id=6]
 [ext_resource path="res://models/items/ak_material.material" type="Material" id=7]
+[ext_resource path="res://scenes/projectiles/bullet.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/hit_effects/dust_explosion.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Animation" id=8]
 length = 0.001
@@ -157,8 +159,11 @@ item_pickup = ExtResource( 6 )
 ammo_in_magazine = 30
 extra_ammo = 120
 fire_rate = 10.0
-impact_effect = ExtResource( 3 )
+blood_impact = ExtResource( 3 )
+dust_impact = ExtResource( 9 )
+bullet_projectile = ExtResource( 8 )
 muzzle_flash_path = NodePath("AK_Armature/Skeleton/AK-47/Muzzle/MuzzleFlash")
+muzzle_path = NodePath("AK_Armature/Skeleton/AK-47/Muzzle")
 equip_speed = 2.0
 unequip_speed = 2.0
 reload_speed = 2.0

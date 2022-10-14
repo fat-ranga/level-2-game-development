@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scripts/player.gd" type="Script" id=1]
 [ext_resource path="res://models/char_one_handed_fire_loop.anim" type="Animation" id=2]
@@ -12,7 +12,6 @@
 [ext_resource path="res://scripts/item_manager.gd" type="Script" id=10]
 [ext_resource path="res://scenes/items/unarmed.tscn" type="PackedScene" id=12]
 [ext_resource path="res://models/char_walk_backwards_loop.anim" type="Animation" id=14]
-[ext_resource path="res://default_env.tres" type="Environment" id=15]
 
 [sub_resource type="ArrayMesh" id=3]
 resource_name = "human_Jack001"
@@ -672,7 +671,7 @@ target_node = NodePath("../../../Head/Camera/Hand/IKPosition")
 min_distance = 10.0
 
 [node name="RightHand" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999789, 0.0205389, -0.000396207, -0.000242412, 0.0075027, 0.999972, 0.0205422, 0.999761, -0.00749582, -0.172406, 1.58656, 0.378797 )
+transform = Transform( -0.999791, 0.020436, -0.000392303, -0.000237107, 0.00760609, 0.999971, 0.0204394, 0.999763, -0.00759917, -0.172403, 1.5865, 0.378921 )
 bone_name = "Hand.R"
 
 [node name="Items" type="Spatial" parent="HumanArmature/Skeleton/RightHand"]
@@ -731,7 +730,6 @@ render_target_update_mode = 3
 
 [node name="FirstPersonCamera" type="Camera" parent="Head/Camera/ViewportContainer/Viewport"]
 cull_mask = 2
-environment = ExtResource( 15 )
 fov = 90.0
 near = 0.01
 far = 10.0

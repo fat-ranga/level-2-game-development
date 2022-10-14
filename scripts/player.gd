@@ -24,7 +24,7 @@ var original_hand_position = Vector3.ZERO
 export var ads_position = Vector3.ZERO
 var ads_speed = 10
 var is_ads = false
-var ads_fov = 50
+var ads_fov = 40
 var regular_fov
 var sprint_fov
 

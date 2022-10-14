@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/gun.gd" type="Script" id=1]
 [ext_resource path="res://scenes/muzzle_flashes/ar_muzzle_flash.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://models/items/textures/Pistol_Texture.png" type="Texture" id=4]
 [ext_resource path="res://textures/ui/m1911_icon.png" type="Texture" id=5]
 [ext_resource path="res://scenes/items/pistol_pickup.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/projectiles/bullet.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/hit_effects/dust_explosion.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Animation" id=8]
 length = 0.001
@@ -231,8 +233,11 @@ is_automatic = false
 ammo_in_magazine = 7
 extra_ammo = 45
 fire_rate = 10.0
-impact_effect = ExtResource( 3 )
+blood_impact = ExtResource( 3 )
+dust_impact = ExtResource( 8 )
+bullet_projectile = ExtResource( 7 )
 muzzle_flash_path = NodePath("PistolArmature/Skeleton 3/M1911/Muzzle/MuzzleFlash")
+muzzle_path = NodePath("PistolArmature/Skeleton 3/M1911/Muzzle")
 equip_speed = 2.0
 unequip_speed = 2.0
 reload_speed = 2.0
