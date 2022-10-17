@@ -41,12 +41,15 @@ export var equip_speed = 1.0
 export var unequip_speed = 1.0
 export var reload_speed = 1.0
 
-# Pool of projectiles, these are activated when needed.
+# Pool of projectiles, these are added and deleted when a gun is fired.
 var projectiles = []
 # So we can get the correct last position for each bullet.
 var projectile_index = 0
-# So that the projectile isn't clipping with the gun when spawned
+# So that the projectile isn't clipping with the gun when spawned.
 var projectile_offset = 3.5
+
+# Same as with the projectile pool.
+var impact_effects = []
 
 
 func _ready():
@@ -57,8 +60,9 @@ func _ready():
 	animation_player.connect("animation_finished", self, "on_animation_finish")
 	muzzle_flash.visible = false
 
-func _process(delta):
+func _physics_process(delta):
 	process_projectiles(delta)
+	process_impact_effects(delta)
 
 func process_projectiles(delta):
 	for bullet in projectiles:
@@ -68,7 +72,7 @@ func process_projectiles(delta):
 		# Delete bullet if it's existed for too long.
 		bullet.lifetime -= delta
 		if bullet.lifetime < 0:
-			# Delete the bullet and remove it from the array
+			# Delete the bullet and remove it from the array.
 			bullet.queue_free()
 			projectiles.erase(bullet)
 		
@@ -77,7 +81,6 @@ func process_projectiles(delta):
 		
 		var collision = space_state.intersect_ray(bullet.last_position, bullet.global_transform.origin, [self])
 		if collision:
-			# TODO delete these
 			var impact
 			# Spawn the hit effect a little bit away from the surface to reduce clipping.
 			var impact_position = (collision.position) + (collision.normal * 0.2)
@@ -86,12 +89,23 @@ func process_projectiles(delta):
 			# Check if we hit an enemy, then damage them. Spawn the correct impact effect.
 			if hit.is_in_group("Enemy"):
 				hit.damage(damage)
-				impact = Global.instantiate_node(blood_impact, impact_position)
+				var new_impact = Global.instantiate_node(blood_impact, impact_position)
+				impact_effects.append(new_impact)
 			else:
-				impact = Global.instantiate_node(dust_impact, impact_position)
-			# Delete the bullet and remove it from the array
+				var new_impact = Global.instantiate_node(dust_impact, impact_position)
+				impact_effects.append(new_impact)
+			# Delete the bullet and remove it from the array.
 			bullet.queue_free()
 			projectiles.erase(bullet)
+
+func process_impact_effects(delta):
+	for effect in impact_effects:
+	# Delete effect if it's existed for too long.
+		effect.lifetime -= delta
+		if effect.lifetime < 0:
+			# Delete the effect and remove it from the array.
+			effect.queue_free()
+			impact_effects.erase(effect)
 
 # Will be called from the animation track.
 func fire_bullet():
@@ -160,6 +174,7 @@ func fire_bullet():
 			projectiles.append(projectile)
 
 func fire():
+	# Basically loop the firing animation if the weapon is automatic, otherwise don't.
 	if is_automatic:
 		if not is_reloading:
 			if ammo_in_magazine > 0:
@@ -200,6 +215,7 @@ func equip():
 
 func unequip():
 	animation_player.play("unequip", -1.0, unequip_speed)
+	is_reloading = false # Might as well.
 	
 func is_equip_finished():
 	if is_equipped:

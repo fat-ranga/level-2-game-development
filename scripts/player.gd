@@ -31,14 +31,14 @@ var mouse_movement
 var sway_threshold = 5
 var sway_speed = 0.005
 var sway_factor = 1
-var original_hand_position = Vector3.ZERO
+var original_arms_position = Vector3.ZERO
 var relative_mouse_movement = Vector2.ZERO
 
 # Aim down sights (ADS).
 export var ads_position = Vector3.ZERO
 var ads_speed = 10
 var is_ads = false
-var ads_fov = 40
+var ads_fov = 30
 var regular_fov
 var sprint_fov
 
@@ -59,19 +59,22 @@ onready var collision_shape = $CollisionShape
 onready var camera = $Head/Camera
 onready var first_person_camera = $Head/Camera/ViewportContainer/Viewport/FirstPersonCamera
 onready var aimcast = $Head/Camera/AimCast # Raycast used for close-range firefights.
-onready var item_manager = $HumanArmature/Skeleton/RightHand/Items
+onready var item_manager = $Head/Camera/Arms/Items
 onready var hud = $Head/Camera/ViewportContainer/HUD
 
 # Rigging and animation.
-onready var hand = $Head/Camera/Hand
-onready var skeleton = $HumanArmature/Skeleton
-onready var skeleton_ik_node = $HumanArmature/Skeleton/SkeletonIK
-onready var animation_tree = $AnimationTree
+onready var arms = $Head/Camera/Arms
+#onready var arms_animation_player = $Head/Camera/Arms/player_arms/AnimationPlayer
+#onready var hand = $Head/Camera/Hand
+#onready var skeleton = $HumanArmature/Skeleton
+#onready var skeleton_ik_node = $HumanArmature/Skeleton/SkeletonIK
+#onready var animation_tree = $AnimationTree
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set the original head position. For fixing jitter.
 	original_head_transform = head.translation
+	print(head.translation)
 	
 	# Set our current health to whatever ouw maximum health is.
 	current_health = max_health
@@ -80,16 +83,13 @@ func _ready():
 	# Keep the mouse positioned at screen centre.
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
-	# Run the inverse kinematics, this ensures the hand follows the camera.
-	skeleton_ik_node.start()
-	
 	# Connect to signals emitted when settings are changed, and call
 	# the relevant function.
 	Global.connect("fov_updated", self, "_on_fov_updated")
 	Global.connect("mouse_sensitivity_updated", self, "_on_mouse_sensitivity_updated")
 	
 	# Get local location for hand so that the hand sway and ADS has a value to go back to.
-	original_hand_position = hand.translation
+	original_arms_position = arms.translation
 	
 	# Same with the camera FOV.
 	regular_fov = camera.fov
@@ -99,7 +99,7 @@ func _ready():
 	
 	# Set sprint FOV to be a bit larger than the FOV set by the user.
 	# Make sure it doesn't end up over 179 degrees, since that's an
-	# impossible FOV for a camera
+	# impossible FOV for a camera.
 	sprint_fov = regular_fov * fov_change_factor
 	if sprint_fov >= 179:
 		sprint_fov = 179
@@ -124,59 +124,60 @@ func _input(event):
 					item_manager.previous_item()
 
 func _process(delta):
-	fix_jitter(delta)
-	
+	#fix_jitter(delta)
 	# Set the HUD/first person camera to the same position as the actual camera.
 	first_person_camera.global_transform = camera.global_transform
-	
 	handle_animation()
-	handle_hand_sway(delta)
 	handle_items()
+	
 
 func _physics_process(delta):
 	handle_movement(delta)
+	handle_hand_sway(delta)
+	process_movement_effects(delta)
 
 func fix_jitter(delta):
 	var fps = Engine.get_frames_per_second()
 	# Slices the direction vector into little pieces, which get smaller as FPS increases.
 	var lerp_interval = direction/fps
 	# The position we should actually be at is our physics position plus these little slices.
-	var lerp_position = global_transform.origin + lerp_interval
-	var regular_position = global_transform.origin
+	var lerp_position = global_transform.origin# + lerp_interval
+	var skeleton_lerp_position = lerp_position + lerp_interval
+	lerp_position = (lerp_position + original_head_transform) + lerp_interval
 	
 	# If the FPS is greater than the physics framerate, then we interpolate
 	# to where the head and stuff should be in any _process frame.
 	# Otherwise, we don't bother with any interpolation.
-	if fps > PHYSICS_FRAMERATE:
-		head.set_as_toplevel(true) # Move independently of collider.
-		head.global_transform.origin = head.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
-		skeleton.set_as_toplevel(true)
-		skeleton.global_transform.origin = skeleton.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
-	else:
-#		head.global_transform = head.global_transform
-#		head.set_as_toplevel(false)
-#		skeleton.global_transform = skeleton.global_transform
-#		skeleton.set_as_toplevel(false)
-		head.set_as_toplevel(true) # Move independently of collider.
-		head.global_transform.origin = head.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
-		skeleton.set_as_toplevel(true)
-		skeleton.global_transform.origin = skeleton.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
+#	if fps > PHYSICS_FRAMERATE:
+#		head.set_as_toplevel(true)
+#		head.global_transform.origin = head.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
+#		skeleton.set_as_toplevel(true)
+#		skeleton.global_transform.origin = skeleton.global_transform.origin.linear_interpolate(skeleton_lerp_position, JITTER_LERP_WEIGHT * delta)
+#	else:
+#		#head.global_transform = head.global_transform
+#		#head.set_as_toplevel(false)
+#
+#		head.set_as_toplevel(true)
+#		head.global_transform.origin = head.global_transform.origin.linear_interpolate(lerp_position, JITTER_LERP_WEIGHT * delta)
+#		#print(head.global_transform.origin)
+#		skeleton.set_as_toplevel(true)
+#		skeleton.global_transform.origin = skeleton.global_transform.origin.linear_interpolate(skeleton_lerp_position, JITTER_LERP_WEIGHT * delta)
 
 func aim_down_sights(value:bool, delta):
 	is_ads = value
 	
 	# If value is set to true, we look down sights.
 	if is_ads:
-		hand.transform.origin = hand.transform.origin.linear_interpolate(ads_position, ads_speed * delta)
+		arms.transform.origin = arms.transform.origin.linear_interpolate(ads_position, ads_speed * delta)
 		camera.fov = lerp(camera.fov, ads_fov, ads_speed * delta)
 		first_person_camera.fov = lerp(camera.fov, ads_fov, ads_speed * delta)
 	# If not, we don't.
 	else:
-		hand.transform.origin = hand.transform.origin.linear_interpolate(original_hand_position, ads_speed * delta)
+		arms.transform.origin = arms.transform.origin.linear_interpolate(original_arms_position, ads_speed * delta)
 		camera.fov = lerp(camera.fov, regular_fov, ads_speed * delta)
 		first_person_camera.fov = lerp(camera.fov, regular_fov, ads_speed * delta)
 
-func process_movement_effects(delta, velocity):
+func process_movement_effects(delta):
 	# Head bobbing.
 	if h_velocity.length() <3.0 or is_on_floor() == false:
 		pass
@@ -251,9 +252,6 @@ func handle_movement(delta):
 	movement.x = h_velocity.x + gravity_vector.x
 	movement.y = gravity_vector.y
 	
-	# Camera FOV change and stuff need movement-related variables, so this function is here.
-	process_movement_effects(delta, movement)
-	
 	# Actually move the player.
 	move_and_slide(movement, Vector3.UP)
 
@@ -265,16 +263,17 @@ func handle_hand_sway(delta):
 		aim_down_sights(false, delta)
 	
 	var location = Vector3(
-		original_hand_position.x - relative_mouse_movement.x * 5,
-		original_hand_position.y + relative_mouse_movement.y * 5,
-		original_hand_position.z
+		original_arms_position.x - relative_mouse_movement.x * 5,
+		original_arms_position.y + relative_mouse_movement.y * 5,
+		original_arms_position.z
 	)
-	hand.translation = hand.translation.linear_interpolate(location, delta * sway_speed)
+	arms.translation = arms.translation.linear_interpolate(location, delta * sway_speed)
 	relative_mouse_movement = Vector2.ZERO
 
 func handle_animation():
+	pass
 	# TODO check if moving foward abckwadfs
-	animation_tree.set("parameters/IdleWalkRun/blend_position", h_velocity.length())
+	#animation_tree.set("parameters/IdleWalkRun/blend_position", h_velocity.length())
 
 func handle_items():
 	if Input.is_action_just_pressed("select_melee"):

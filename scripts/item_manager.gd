@@ -109,10 +109,10 @@ func add_item(item_data):
 	# Check if the item actually exists in the all_items dictionary, otherwise we
 	# get an error when trying to instantiate an item that doesn't exist.
 	if not item_data["name"] in all_items:
+		print("Item doesn't exist! Try naming it correctly next time.")
 		print(item_data["name"])
 		print(all_items)
 		return
-	
 	# Instantiate the new item.
 	var item = Global.instantiate_node(all_items[item_data["name"]], Vector3.ZERO, self)
 	

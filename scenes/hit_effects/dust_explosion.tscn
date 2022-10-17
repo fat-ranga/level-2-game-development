@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://textures/hit_effects/dust_explosion.png" type="Texture" id=1]
+[ext_resource path="res://scripts/impact_effect.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -74,6 +75,7 @@ animations = [ {
 } ]
 
 [node name="Spatial" type="Spatial"]
+script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "explode"
@@ -87,5 +89,5 @@ billboard = 1
 double_sided = false
 frames = SubResource( 7 )
 animation = "explode"
-frame = 2
+frame = 3
 playing = true
