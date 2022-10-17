@@ -32,9 +32,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	# If we have no health, then delete ourselves.
+	# If we have no health, then die.
 	if health <= 0:
-		queue_free()
+		die()
 	
 	# Enemy state machine.
 	match state:
@@ -65,6 +65,9 @@ func _on_NavigationTimer_timeout():
 
 func damage(damage):
 	health -= (damage)
+
+func die():
+	animation_player.play("die")
 
 func _on_SightRange_body_entered(body):
 	if body.is_in_group("Player"):

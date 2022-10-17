@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/enemy.gd" type="Script" id=1]
 [ext_resource path="res://models/Jack.material" type="Material" id=2]
+[ext_resource path="res://models/die.anim" type="Animation" id=3]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "human_Jack"
@@ -2251,6 +2252,7 @@ anims/char_one_handed_fire_loop = SubResource( 3 )
 anims/char_one_handed_idle_loop = SubResource( 4 )
 anims/char_walk_backwards_loop = SubResource( 5 )
 anims/char_walk_loop = SubResource( 6 )
+anims/die = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.994892, 0 )

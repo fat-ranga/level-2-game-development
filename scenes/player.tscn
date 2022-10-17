@@ -48,6 +48,7 @@ near = 0.01
 far = 10.0
 
 [node name="AimCast" type="RayCast" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.77328e-08, 0, 0.31612 )
 enabled = true
 cast_to = Vector3( 0, 0, -1000 )
 

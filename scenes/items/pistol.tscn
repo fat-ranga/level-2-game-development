@@ -1294,6 +1294,7 @@ item_pickup = ExtResource( 6 )
 is_automatic = false
 ammo_in_magazine = 7
 extra_ammo = 45
+damage = 23
 fire_rate = 2.0
 projectiles_per_shot = 1
 randomness = 0.008

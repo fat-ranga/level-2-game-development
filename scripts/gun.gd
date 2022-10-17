@@ -22,7 +22,7 @@ onready var magazine_size = ammo_in_magazine
 export var damage = 15
 export var fire_rate = 1.0 # Non-automatic weapons also consider this.
 export var projectiles_per_shot = 5
-export var projectile_speed = 2.1
+export var projectile_speed = 4.0
 export var randomness = 0.5
 export var raycast_distance = 5 # Distance beyond which we generate projectiles when fired.
 
@@ -113,6 +113,9 @@ func fire_bullet():
 	muzzle_flash_animation_player.play("scale_flash")
 	update_ammo("consume")
 	
+	# Reset the rotation of the ray, since we randomise it later.
+	ray.rotation = Vector3.ZERO
+	
 	ray.force_raycast_update() # Updates collision information.
 	
 	# If we hit something, do stuff.
@@ -141,17 +144,29 @@ func fire_bullet():
 				
 				projectiles.append(projectile)
 		else:
+			# Update the raycast instead of spawning a projectile.
 			for i in projectiles_per_shot:
-				# TODO delete these
-				var impact
-				# Spawn the hit effect a little bit away from the surface to reduce clipping.
-				var impact_position = (ray.get_collision_point()) + (ray.get_collision_normal() * 0.2)
-				var hit = ray.get_collider()
-				if hit.is_in_group("Enemy"):
-					hit.damage(damage)
-					impact = Global.instantiate_node(blood_impact, impact_position)
-				else:
-					impact = Global.instantiate_node(dust_impact, impact_position)
+				# Add a bit of randomisation.
+				ray.rotation += Vector3(rand_range(randomness, -randomness),
+				rand_range(randomness, -randomness),
+				rand_range(randomness, -randomness))
+				
+				ray.force_raycast_update() # Updates collision information.
+				
+				# Reset the rotation of the ray, after getting collision information.
+				ray.rotation = Vector3.ZERO
+				
+				# If any of the rays hit something, do stuff.
+				if ray.is_colliding():
+					var impact
+					# Spawn the hit effect a little bit away from the surface to reduce clipping.
+					var impact_position = (ray.get_collision_point()) + (ray.get_collision_normal() * 0.2)
+					var hit = ray.get_collider()
+					if hit.is_in_group("Enemy"):
+						hit.damage(damage)
+						impact = Global.instantiate_node(blood_impact, impact_position)
+					else:
+						impact = Global.instantiate_node(dust_impact, impact_position)
 	else:
 		for i in projectiles_per_shot:
 			# Set the point the bullet looks at to a point the ray is facing.

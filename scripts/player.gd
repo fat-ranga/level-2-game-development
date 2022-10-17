@@ -8,6 +8,7 @@ var original_head_transform
 # Health.
 var max_health = 100
 var current_health
+var death_height = -40
 
 # Movement.
 var walk_speed: float = 5.0
@@ -74,7 +75,6 @@ onready var arms = $Head/Camera/Arms
 func _ready():
 	# Set the original head position. For fixing jitter.
 	original_head_transform = head.translation
-	print(head.translation)
 	
 	# Set our current health to whatever ouw maximum health is.
 	current_health = max_health
@@ -132,9 +132,15 @@ func _process(delta):
 	
 
 func _physics_process(delta):
+	# If we fall off the world, die.
+	if translation.y < death_height:
+		die()
 	handle_movement(delta)
 	handle_hand_sway(delta)
 	process_movement_effects(delta)
+
+func die():
+	print("You died!")
 
 func fix_jitter(delta):
 	var fps = Engine.get_frames_per_second()
