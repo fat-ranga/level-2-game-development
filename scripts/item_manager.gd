@@ -1,5 +1,8 @@
 extends Spatial
 
+# For declaring to the HUD that the terminal has been interacted with.
+signal terminal_opened
+
 # All items in the game.
 var all_items = {}
 
@@ -17,7 +20,7 @@ var unequipped_item = false
 var item_index = 0 # For switching items via scroll wheel.
 
 onready var camera = owner.get_node("Head/Camera")
-var reach_ray_length = 5.0
+var reach_ray_length = 3.5
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -288,6 +291,13 @@ func process_item_pickup():
 			if Input.is_action_just_pressed("interact"):
 				replace_item(item_data)
 				body.queue_free()
+			return
+		
+		if body.is_in_group("Terminal"):
+			hud.show_interaction_prompt("Open Terminal")
+			if Input.is_action_just_pressed("interact"):
+				emit_signal("terminal_opened")
+			return
 	else:
 		hide_interaction_prompt()
 

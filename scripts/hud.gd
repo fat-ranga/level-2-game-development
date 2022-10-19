@@ -12,6 +12,7 @@ var interaction_prompt_description
 var reticle
 
 onready var pause_menu = $PauseMenu
+onready var terminal_menu = $TerminalMenu
 
 func _enter_tree():
 	item_ui = $Background/ItemUI
@@ -25,6 +26,7 @@ func _enter_tree():
 	reticle = $Reticle
 	
 func _ready():
+	pause_mode = Node.PAUSE_MODE_PROCESS # Makes sure pause menu is unaffected by pausing the world.
 	# Hide the prompt and pause menu when the game is started.
 	hide_interaction_prompt()
 	pause_menu.hide()
@@ -84,3 +86,12 @@ func _on_PauseMenu_pause_menu_closed():
 
 func _on_Player_player_died():
 	get_tree().change_scene("res://scenes/ui/death_menu.tscn")
+
+func _on_Items_terminal_opened():
+	# Show the mouse so we can do stuff.
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	terminal_menu.show()
+	hide_interaction_prompt()
+	background.hide()
+	reticle.hide()
+	pause_menu.set_paused(true)

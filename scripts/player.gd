@@ -210,8 +210,10 @@ func handle_movement(delta):
 	# Which way we are going to move.
 	direction = Vector3()
 	
+	# By default, we are not hitting our head on a ceiling.
 	var is_head_bonked = false
 	
+	# The head_bonker raycast checks if we are hitting our head on a ceiling.
 	if head_bonker.is_colliding():
 		is_head_bonked = true
 	

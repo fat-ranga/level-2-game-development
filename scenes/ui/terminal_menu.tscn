@@ -1,10 +1,20 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/terminal_menu.gd" type="Script" id=1]
+[ext_resource path="res://fonts/Silkscreen-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://textures/ui/outline.png" type="Texture" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+use_mipmaps = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
 
 [node name="TerminalMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = SubResource( 2 )
 script = ExtResource( 1 )
 secret_password = "fatranga"
 cipher_encryption_number = 11
@@ -33,25 +43,28 @@ __meta__ = {
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 86.0
-margin_top = -24.0
-text = "Input"
+margin_left = 177.0
+margin_top = -31.9996
+margin_right = -1.00079
+margin_bottom = -0.999634
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="OutputText" type="Label" parent="Rim/Background"]
 margin_left = 24.0
 margin_top = 24.0
 margin_right = 308.0
 margin_bottom = 136.0
-text = "> text output"
+text = "> Decrypt the password using provided access key. you have three attempts..."
 
 [node name="Password" type="Label" parent="Rim/Background"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 16.0
-margin_top = -20.0
-margin_right = 128.0
-margin_bottom = 2.0
-text = "Password:"
+margin_left = 6.00043
+margin_top = -25.4999
+margin_right = 118.0
+margin_bottom = -3.49988
+text = "Enter Password:"
 
 [node name="Tries" type="Label" parent="Rim/Background"]
 anchor_left = 1.0
@@ -63,4 +76,44 @@ margin_bottom = 136.0
 text = "Tries: "
 align = 2
 
+[node name="RichTextLabel" type="RichTextLabel" parent="Rim/Background"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -42.0
+margin_right = 250.0
+margin_bottom = 42.0
+text = "Decrypt the following:
+
+abcdefg"
+
+[node name="TextureRect" type="TextureRect" parent="Rim/Background"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -150.001
+margin_top = -115.5
+margin_right = -0.000793457
+margin_bottom = 115.5
+texture = ExtResource( 3 )
+expand = true
+
+[node name="CipherNumber" type="Label" parent="Rim/Background/TextureRect"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 10.0
+margin_top = -29.5
+margin_right = 78.0
+margin_bottom = 29.5
+text = "0"
+
+[node name="VSlider" type="VSlider" parent="Rim/Background/TextureRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+max_value = 26.0
+
+[node name="EventTimer" type="Timer" parent="."]
+
 [connection signal="text_entered" from="Rim/Background/LineEdit" to="." method="_on_LineEdit_text_entered"]
+[connection signal="drag_started" from="Rim/Background/TextureRect/VSlider" to="." method="_on_VSlider_drag_started"]
+[connection signal="value_changed" from="Rim/Background/TextureRect/VSlider" to="." method="_on_VSlider_value_changed"]
