@@ -9,7 +9,7 @@ var is_settings_hidden = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Make sure
+	# Make sure the mouse can move around.
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	# By default, set the Start button as the focus, so that when one presses
 	# 'Enter', the game is started. Also lets users use arrows to navigate the menu.

@@ -165,8 +165,8 @@ surfaces/0 = {
 transform = Transform( -0.875133, 0.482005, 0.0425903, -0.371522, -0.725706, 0.57907, 0.310023, 0.49094, 0.814164, -0.152426, 5.66032, 0 )
 light_color = Color( 0.980392, 0.92549, 0.886275, 1 )
 light_energy = 1.5
-light_specular = 2.0
 light_cull_mask = 4294967291
+directional_shadow_mode = 0
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( -0.642747, 0, 0.766078, 0, 1, 0, -0.766078, 0, -0.642747, -155.116, 1.78486, 86.4193 )
@@ -203,16 +203,16 @@ mesh = SubResource( 11 )
 shape = SubResource( 12 )
 
 [node name="EnemyRecruit" parent="Navigation" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -142.619, -0.4796, 98.4581 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -142.619, -0.0869209, 98.4581 )
 
 [node name="EnemyRecruit2" parent="Navigation" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -145.623, -0.4796, 99.2369 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -145.623, -0.0869209, 99.2369 )
 
 [node name="EnemyRecruit3" parent="Navigation" instance=ExtResource( 5 )]
-transform = Transform( 0.934186, 0, 0.356787, 0, 1, 0, -0.356787, 0, 0.934186, -141.131, -0.4796, 100.16 )
+transform = Transform( 0.934186, 0, 0.356787, 0, 1, 0, -0.356787, 0, 0.934186, -141.131, -0.0869209, 100.16 )
 
 [node name="EnemyRecruit4" parent="Navigation" instance=ExtResource( 5 )]
-transform = Transform( 0.934186, 0, 0.356787, 0, 1, 0, -0.356787, 0, 0.934186, -143.66, -0.4796, 101.959 )
+transform = Transform( 0.934186, 0, 0.356787, 0, 1, 0, -0.356787, 0, 0.934186, -143.66, -0.0869209, 101.959 )
 
 [node name="Pickups" type="Spatial" parent="."]
 

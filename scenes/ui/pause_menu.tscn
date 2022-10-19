@@ -24,31 +24,31 @@ theme = ExtResource( 3 )
 
 [node name="ResumeButton" type="Button" parent="VBoxContainer"]
 margin_right = 261.0
-margin_bottom = 27.0
+margin_bottom = 34.0
 focus_neighbour_top = NodePath("../ExitGameButton")
 focus_neighbour_bottom = NodePath("../SettingsButton")
 text = "Resume"
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer"]
-margin_top = 31.0
+margin_top = 38.0
 margin_right = 261.0
-margin_bottom = 58.0
+margin_bottom = 72.0
 focus_neighbour_top = NodePath("../ResumeButton")
 focus_neighbour_bottom = NodePath("../ExitGameButton")
 text = "Settings"
 
 [node name="BackToMainMenuButton" type="Button" parent="VBoxContainer"]
-margin_top = 62.0
+margin_top = 76.0
 margin_right = 261.0
-margin_bottom = 89.0
+margin_bottom = 110.0
 focus_neighbour_top = NodePath("../SettingsButton")
 focus_neighbour_bottom = NodePath("../ResumeButton")
 text = "Back to Main Menu"
 
 [node name="ExitGameButton" type="Button" parent="VBoxContainer"]
-margin_top = 93.0
+margin_top = 114.0
 margin_right = 261.0
-margin_bottom = 120.0
+margin_bottom = 148.0
 focus_neighbour_top = NodePath("../SettingsButton")
 focus_neighbour_bottom = NodePath("../ResumeButton")
 text = "Exit Game"

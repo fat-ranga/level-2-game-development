@@ -38,6 +38,10 @@ window/energy_saving/keep_screen_on=false
 
 enabled=PoolStringArray( "res://addons/gd-blender-3d-shortcuts/plugin.cfg" )
 
+[global]
+
+v_sync=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
@@ -143,12 +147,10 @@ f11={
 
 [physics]
 
-common/physics_fps=30
 common/enable_pause_aware_picking=true
 common/physics_interpolation=true
 
 [rendering]
 
-quality/filters/msaa=1
-quality/filters/use_debanding=true
+quality/filters/anisotropic_filter_level=2
 environment/default_environment="res://default_env.tres"

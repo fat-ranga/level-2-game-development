@@ -35,6 +35,18 @@ export(NodePath) var muzzle_path
 onready var muzzle_flash = get_node(muzzle_flash_path)
 onready var muzzle_flash_animation_player = get_node(str(muzzle_flash_path) + "/AnimationPlayer")
 onready var muzzle = get_node(muzzle_path)
+export var fire_sound: AudioStream
+export var reload_sound: AudioStream
+export var clip_load_sound: AudioStream
+
+# These are sound effects that can be instantiated when a sound is played.
+var sound_3d = preload("res://scenes/audio/sound_3d.tscn")
+var sound_direct = preload("res://scenes/audio/sound_direct.tscn")
+
+# This is an example of how to use them.
+#var sound = sound_direct.instance()
+#add_child(sound)
+#sound.play_sound(audio_stream)
 
 # Optional.
 export var equip_speed = 1.0
@@ -295,3 +307,19 @@ func drop_item():
 	pickup.magazine_size = magazine_size
 	
 	queue_free() # Delete item currently held.
+
+# These are called from the AnimationPlayer.
+func play_reload_sound():
+	var sound = sound_direct.instance()
+	add_child(sound)
+	sound.play_sound(reload_sound)
+
+func play_fire_sound():
+	var sound = sound_direct.instance()
+	add_child(sound)
+	sound.play_sound(fire_sound)
+
+func play_clip_load_sound():
+	var sound = sound_direct.instance()
+	add_child(sound)
+	sound.play_sound(clip_load_sound)

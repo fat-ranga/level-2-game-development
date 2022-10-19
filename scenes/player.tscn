@@ -14,6 +14,12 @@ process_priority = 2
 script = ExtResource( 1 )
 ads_position = Vector3( 0.024, -0.2, -0.449 )
 
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.3
+
+[node name="WasJumpPressedTimer" type="Timer" parent="."]
+wait_time = 0.3
+
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.07568, 0 )
 shape = SubResource( 18 )
@@ -70,4 +76,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.88731, 0 )
 enabled = true
 cast_to = Vector3( 0, 0.4, 0 )
 
+[connection signal="player_died" from="." to="Head/Camera/ViewportContainer/HUD" method="_on_Player_player_died"]
+[connection signal="timeout" from="CoyoteTimer" to="." method="_on_CoyoteTimer_timeout"]
+[connection signal="timeout" from="WasJumpPressedTimer" to="." method="_on_WasJumpPressedTimer_timeout"]
 [connection signal="play_punch_animation" from="Head/Camera/Arms/Items/Unarmed" to="." method="_on_Unarmed_play_punch_animation"]

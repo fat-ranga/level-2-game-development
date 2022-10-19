@@ -153,5 +153,3 @@ valign = 1
 
 [node name="PauseMenu" parent="." instance=ExtResource( 3 )]
 visible = false
-
-[connection signal="pause_menu_closed" from="PauseMenu" to="." method="_on_PauseMenu_pause_menu_closed"]

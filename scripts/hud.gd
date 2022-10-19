@@ -24,7 +24,6 @@ func _enter_tree():
 	interaction_prompt_description = $InteractionPrompt/MarginContainer/Description
 	reticle = $Reticle
 	
-
 func _ready():
 	# Hide the prompt and pause menu when the game is started.
 	hide_interaction_prompt()
@@ -82,3 +81,6 @@ func get_key_from_action(action):
 func _on_PauseMenu_pause_menu_closed():
 	background.show()
 	reticle.show()
+
+func _on_Player_player_died():
+	get_tree().change_scene("res://scenes/ui/death_menu.tscn")

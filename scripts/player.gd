@@ -1,5 +1,7 @@
 extends KinematicBody
 
+signal player_died
+
 # For fixing physics jitter via interpolation.
 const PHYSICS_FRAMERATE = 60
 const JITTER_LERP_WEIGHT = 50
@@ -8,7 +10,7 @@ var original_head_transform
 # Health.
 var max_health = 100
 var current_health
-var death_height = -40
+var death_height = -50
 
 # Movement.
 var walk_speed: float = 5.0
@@ -26,6 +28,8 @@ var gravity: float = 20.0
 var full_contact: bool = false
 
 var mouse_sensitivity: float = 0.06
+var has_coyote_time = true
+var was_jump_pressed = false
 
 # Hand sway.
 var mouse_movement
@@ -62,6 +66,8 @@ onready var first_person_camera = $Head/Camera/ViewportContainer/Viewport/FirstP
 onready var aimcast = $Head/Camera/AimCast # Raycast used for close-range firefights.
 onready var item_manager = $Head/Camera/Arms/Items
 onready var hud = $Head/Camera/ViewportContainer/HUD
+onready var timer_coyote = $CoyoteTimer
+onready var timer_was_jump_pressed = $WasJumpPressedTimer
 
 # Rigging and animation.
 onready var arms = $Head/Camera/Arms
@@ -140,7 +146,7 @@ func _physics_process(delta):
 	process_movement_effects(delta)
 
 func die():
-	print("You died!")
+	emit_signal("player_died")
 
 func fix_jitter(delta):
 	var fps = Engine.get_frames_per_second()
@@ -209,6 +215,14 @@ func handle_movement(delta):
 	if head_bonker.is_colliding():
 		is_head_bonked = true
 	
+	if is_on_floor() or ground_check.is_colliding():
+		has_coyote_time = true
+		if was_jump_pressed:
+			gravity_vector = Vector3.UP * jump_power
+			was_jump_pressed = false
+	else:
+		timer_coyote.start() # Starts the coyote time countdown.
+	
 	# Check if we're on the ground or not.
 	if ground_check.is_colliding():
 		full_contact = true
@@ -229,8 +243,12 @@ func handle_movement(delta):
 		h_acceleration = regular_acceleration
 	
 	# Jumping.
-	if Input.is_action_pressed("jump") and (is_on_floor() or ground_check.is_colliding()) and not is_head_bonked:
-		gravity_vector = Vector3.UP * jump_power
+	if Input.is_action_pressed("jump") and not is_head_bonked:
+		was_jump_pressed = true
+		timer_was_jump_pressed.start()
+		if has_coyote_time:
+			gravity_vector = Vector3.UP * jump_power
+			has_coyote_time = false # Make sure we cannot jump again.
 	
 	# Forwards/backwards and left/right input and movement.
 	direction += transform.basis.x * (Input.get_action_strength("move_left") - Input.get_action_strength("move_right"))
@@ -316,7 +334,14 @@ func _on_mouse_sensitivity_updated(value):
 func damage(damage):
 	current_health -= (damage)
 	hud.update_health_ui(current_health)
-	
+	if current_health < 0:
+		die()
 
-#func _on_Unarmed_play_punch_animation():
-#	animation_player.play("char_punch", -1.0)
+func _on_WasJumpPressedTimer_timeout():
+	was_jump_pressed = false
+	pass
+
+# This means we can jump even if we aren't touching the ground.
+func _on_CoyoteTimer_timeout():
+	has_coyote_time = false
+	pass
