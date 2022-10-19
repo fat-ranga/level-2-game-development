@@ -1,5 +1,8 @@
 extends Control
 
+signal correct_answer
+signal self_destruct
+
 # References to all our UI stuff in this HUD.
 var item_ui
 var health_ui
@@ -88,10 +91,22 @@ func _on_Player_player_died():
 	get_tree().change_scene("res://scenes/ui/death_menu.tscn")
 
 func _on_Items_terminal_opened():
-	# Show the mouse so we can do stuff.
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	terminal_menu.show()
-	hide_interaction_prompt()
-	background.hide()
-	reticle.hide()
-	pause_menu.set_paused(true)
+	if terminal_menu.is_terminal_active:
+		# Show the mouse so we can do stuff.
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		terminal_menu.show()
+		hide_interaction_prompt()
+		background.hide()
+		reticle.hide()
+		pause_menu.set_paused(true)
+
+# Pass these to the player, who will then pass them to door/explosion.
+func _on_TerminalMenu_correct_answer():
+	pause_menu.set_paused(false)
+	terminal_menu.hide()
+	emit_signal("correct_answer")
+
+func _on_TerminalMenu_self_destruct():
+	pause_menu.set_paused(false)
+	terminal_menu.hide()
+	emit_signal("self_destruct")

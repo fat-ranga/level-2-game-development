@@ -2,6 +2,10 @@ extends KinematicBody
 
 signal player_died
 
+# For the terminal.
+signal correct_answer
+signal self_destruct
+
 # For fixing physics jitter via interpolation.
 const PHYSICS_FRAMERATE = 60
 const JITTER_LERP_WEIGHT = 50
@@ -347,3 +351,11 @@ func _on_WasJumpPressedTimer_timeout():
 func _on_CoyoteTimer_timeout():
 	has_coyote_time = false
 	pass
+
+# These are passed from the HUD, now we use these to influence the flow of the game.
+func _on_HUD_correct_answer():
+	emit_signal("correct_answer")
+
+func _on_HUD_self_destruct():
+	emit_signal("self_destruct")
+	get_tree().change_scene("res://scenes/bad_ending.tscn")

@@ -157,3 +157,6 @@ visible = false
 
 [node name="TerminalMenu" parent="." instance=ExtResource( 9 )]
 visible = false
+
+[connection signal="correct_answer" from="TerminalMenu" to="." method="_on_TerminalMenu_correct_answer"]
+[connection signal="self_destruct" from="TerminalMenu" to="." method="_on_TerminalMenu_self_destruct"]

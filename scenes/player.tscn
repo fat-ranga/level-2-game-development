@@ -79,5 +79,7 @@ cast_to = Vector3( 0, 0.4, 0 )
 [connection signal="player_died" from="." to="Head/Camera/ViewportContainer/HUD" method="_on_Player_player_died"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_CoyoteTimer_timeout"]
 [connection signal="timeout" from="WasJumpPressedTimer" to="." method="_on_WasJumpPressedTimer_timeout"]
+[connection signal="correct_answer" from="Head/Camera/ViewportContainer/HUD" to="." method="_on_HUD_correct_answer"]
+[connection signal="self_destruct" from="Head/Camera/ViewportContainer/HUD" to="." method="_on_HUD_self_destruct"]
 [connection signal="terminal_opened" from="Head/Camera/Arms/Items" to="Head/Camera/ViewportContainer/HUD" method="_on_Items_terminal_opened"]
 [connection signal="play_punch_animation" from="Head/Camera/Arms/Items/Unarmed" to="." method="_on_Unarmed_play_punch_animation"]

@@ -55,7 +55,8 @@ margin_left = 24.0
 margin_top = 24.0
 margin_right = 308.0
 margin_bottom = 136.0
-text = "> Decrypt the password using provided access key. you have three attempts..."
+text = "> Decrypt the password using provided cipher key.
+You have three attempts..."
 
 [node name="Password" type="Label" parent="Rim/Background"]
 anchor_top = 1.0
@@ -76,7 +77,7 @@ margin_bottom = 136.0
 text = "Tries: "
 align = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Rim/Background"]
+[node name="EncryptedMessage" type="RichTextLabel" parent="Rim/Background"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_top = -42.0
@@ -98,6 +99,13 @@ margin_bottom = 115.5
 texture = ExtResource( 3 )
 expand = true
 
+[node name="Label" type="Label" parent="Rim/Background/TextureRect"]
+anchor_right = 1.0
+margin_top = 4.0
+margin_bottom = 21.0
+text = "cipher number"
+align = 1
+
 [node name="CipherNumber" type="Label" parent="Rim/Background/TextureRect"]
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -110,10 +118,13 @@ text = "0"
 [node name="VSlider" type="VSlider" parent="Rim/Background/TextureRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = 33.0
 max_value = 26.0
 
 [node name="EventTimer" type="Timer" parent="."]
+wait_time = 3.0
 
 [connection signal="text_entered" from="Rim/Background/LineEdit" to="." method="_on_LineEdit_text_entered"]
 [connection signal="drag_started" from="Rim/Background/TextureRect/VSlider" to="." method="_on_VSlider_drag_started"]
 [connection signal="value_changed" from="Rim/Background/TextureRect/VSlider" to="." method="_on_VSlider_value_changed"]
+[connection signal="timeout" from="EventTimer" to="." method="_on_EventTimer_timeout"]

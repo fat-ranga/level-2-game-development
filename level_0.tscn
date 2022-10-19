@@ -415,3 +415,5 @@ mesh = SubResource( 24 )
 shape = SubResource( 25 )
 
 [node name="Terminal" parent="SecretBase" instance=ExtResource( 18 )]
+
+[connection signal="correct_answer" from="Player" to="SecretBase/Door" method="_on_Player_correct_answer"]
