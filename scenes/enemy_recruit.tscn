@@ -2126,7 +2126,7 @@ height = 1.36264
 
 [sub_resource type="CylinderShape" id=8]
 height = 4.57886
-radius = 3.32157
+radius = 18.9549
 
 [node name="EnemyRecruit" type="KinematicBody" groups=["Enemy"]]
 script = ExtResource( 1 )
@@ -2442,7 +2442,7 @@ mesh = SubResource( 1 )
 skin = SubResource( 2 )
 
 [node name="WeaponAttachment" type="BoneAttachment" parent="HumanArmature/Skeleton"]
-transform = Transform( -0.999791, 0.0203905, -0.000440449, -0.000288904, 0.00742283, 0.999971, 0.0203945, 0.999763, -0.00741497, -0.177609, 1.58858, 0.373152 )
+transform = Transform( -0.999786, 0.0206676, -0.000434309, -0.000278637, 0.00752768, 0.999972, 0.0206714, 0.999758, -0.00752005, -0.178321, 1.59368, 0.376747 )
 bone_name = "Hand.R"
 
 [node name="Item" type="MeshInstance" parent="HumanArmature/Skeleton/WeaponAttachment"]
@@ -2490,7 +2490,7 @@ autostart = true
 [node name="RayCast" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.34889, 0 )
 enabled = true
-cast_to = Vector3( 0, 0, -3 )
+cast_to = Vector3( 0, 0, -10 )
 
 [connection signal="body_entered" from="SightRange" to="." method="_on_SightRange_body_entered"]
 [connection signal="body_exited" from="SightRange" to="." method="_on_SightRange_body_exited"]

@@ -13,6 +13,10 @@ var current_cipher_number
 var is_terminal_active = true
 var event_action: String
 
+var player_attempts = []
+var player_attempts_encrypted = []
+var output_data = []
+
 onready var output_text = $Rim/Background/OutputText
 onready var tries_text = $Rim/Background/Tries
 onready var cipher_slider = $Rim/Background/TextureRect/VSlider
@@ -37,12 +41,17 @@ func _ready():
 # Called when the user presses ENTER on the line editor, which is where
 # the user puts their input.
 func _on_LineEdit_text_entered(new_text):
+	player_attempts.append(new_text)
+	var encrypted_text = encrypt_text(new_text, cipher_encryption_number)
+	player_attempts_encrypted.append(encrypted_text)
+	
 	if is_terminal_active:
 		if str(new_text).to_lower() == secret_password.to_lower():
 			output_text.text = "> Correct Answer. Opening high-security door..."
 			line_edit.editable = false
 			is_terminal_active = false
 			event_action = "correct_answer"
+			create_output("The player correctly decrypted the cipher and moved to the victory level.")
 			event_timer.start()
 		else:
 			input_tries -= 1
@@ -55,6 +64,7 @@ func _on_LineEdit_text_entered(new_text):
 			line_edit.editable = false
 			is_terminal_active = false
 			event_action = "self_destruct"
+			create_output("The player failed to decrypt the cipher and moved to the defeat level.")
 			event_timer.start()
 			
 
@@ -76,6 +86,17 @@ func encrypt_text(text: String, cipher: int):
 		result += char((ord(character) + cipher - 97) % 26 + 97)
 		
 	return result
+
+# Generates output file based on data from user input.
+func create_output(user_ending = "None"):
+	var data = ["OUTPUT DATA",
+	"Here are the attempts the user entered:",
+	player_attempts,
+	"And here those same attempts encrypted with the terminal cipher of " + str(cipher_encryption_number),
+	player_attempts_encrypted,
+	user_ending]
+	
+	Output.make_output_data(data)
 
 func _on_VSlider_drag_started():
 	if is_terminal_active:

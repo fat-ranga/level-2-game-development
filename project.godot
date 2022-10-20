@@ -29,6 +29,7 @@ config/windows_native_icon="res://icon.ico"
 
 Global="*res://scripts/global/global.gd"
 Save="*res://scripts/global/save.gd"
+Output="*res://scripts/global/output.gd"
 
 [display]
 
