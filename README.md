@@ -3,7 +3,7 @@ By Kael Robertson.
 
 Made with Godot 3.5.
 
-All relevant code is located within the 'scripts' folder.
+All relevant code is located within the 'scripts' folder. Within this folder there is another called 'global', this contains 'output.gd'.
 
 An output file 'output.txt' is created once the player gets either of the endings.
 This is located in the root directory of the exported game, but an example can also be seen here in the repository.
