@@ -1590,7 +1590,7 @@ bones/46/name = "body"
 bones/46/parent = -1
 bones/46/rest = Transform( 2.38419e-07, -1.78814e-07, -1, 1, -1.19209e-07, 2.98023e-07, -5.96046e-08, -1, 1.19209e-07, 1.30108e-08, 0.477861, -0.249735 )
 bones/46/enabled = true
-bones/46/bound_children = [  ]
+bones/46/bound_children = [ NodePath("MuzzleAttachment") ]
 bones/47/name = "trigger"
 bones/47/parent = 46
 bones/47/rest = Transform( 0.377, -0.926213, -5.46734e-07, 0.926213, 0.377, 4.90052e-07, -2.47774e-07, -6.91142e-07, 1, -0.00719556, 0.0379085, 1.86774e-09 )
@@ -1619,7 +1619,7 @@ mesh = SubResource( 11 )
 skin = SubResource( 10 )
 
 [node name="MuzzleAttachment" type="BoneAttachment" parent="Arms/Skeleton"]
-transform = Transform( 0.0184351, 0.0100935, 0.999779, 0.994597, -0.102359, -0.0173062, 0.102162, 0.994696, -0.0119259, -0.255069, 0.282991, 0.397024 )
+transform = Transform( -3.57627e-07, 3.57628e-07, 1, 1, 5.96044e-08, 2.98023e-07, 1.24345e-13, 1, -2.98023e-07, -0.248443, 0.270272, 0.395361 )
 bone_name = "body"
 
 [node name="Muzzle" type="Spatial" parent="Arms/Skeleton/MuzzleAttachment"]

@@ -18,7 +18,7 @@ func _ready():
 
 # Start the game.
 func _on_StartButton_pressed():
-	get_tree().change_scene("res://world.tscn")
+	get_tree().change_scene("res://intro.tscn")
 
 # Open the settings menu.
 func _on_SettingsButton_pressed():

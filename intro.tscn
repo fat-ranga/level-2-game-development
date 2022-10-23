@@ -1,0 +1,104 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://fonts/Acme-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/intro.gd" type="Script" id=2]
+[ext_resource path="res://textures/ui/photo.png" type="Texture" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 38
+use_filter = true
+font_data = ExtResource( 1 )
+
+[node name="Intro" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="MenuBackground" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -457.5
+margin_top = -268.0
+margin_right = 457.5
+margin_bottom = 268.0
+color = Color( 0.0470588, 0.0470588, 0.0470588, 0.635294 )
+
+[node name="InstructionsHeader" type="Label" parent="MenuBackground"]
+margin_right = 580.0
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 1 )
+text = "INSTRUCTIONS"
+align = 1
+
+[node name="Instructions" type="RichTextLabel" parent="MenuBackground"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 100.0
+margin_top = -206.5
+margin_right = -404.0
+margin_bottom = 24.5
+text = "You are a secret operative whose task is to steal a blue box containing enemy intelligence from a top-secret base located in a remote mountain hideaway.
+
+The base is secured by a door that requires a password to open, and this password is gained by using a Caesar Cipher on an encrypted message provided by the terminal. We could not attain an enemy keycard containing the encryption number, so you will have to figure that out yourself. 
+
+Our scouts have air-dropped an M1911 right in front of you for you to use. They also took this photo of the area and have the base marked.
+
+Good luck, soldier!"
+
+[node name="ControlsHeader" type="Label" parent="MenuBackground"]
+margin_top = 288.0
+margin_right = 499.0
+margin_bottom = 337.0
+custom_fonts/font = SubResource( 1 )
+text = "CONTROLS"
+align = 1
+
+[node name="Controls" type="RichTextLabel" parent="MenuBackground"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -356.5
+margin_top = -204.0
+margin_right = 67.5
+margin_bottom = -10.0
+text = "Movement: WASD
+Jump: SPACEBAR
+Crouch: CTRL
+Interact / Pick up weapon: Hover reticle over target and press F
+Fire: Left Click
+Aim: Right click
+Reload: R
+Switch weapon: Mouse Scroll Wheel
+Primary: 1
+Secondary: 2
+Unarmed: 0
+Drop weapon: G
+Toggle fullscreen: F11"
+
+[node name="ContinueButton" type="Button" parent="MenuBackground"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -170.0
+margin_top = -38.0
+text = "CONTINUE"
+
+[node name="Photo" type="TextureRect" parent="MenuBackground"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -388.5
+margin_top = -201.0
+margin_right = -22.5
+margin_bottom = 141.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 1
+
+[connection signal="pressed" from="MenuBackground/ContinueButton" to="." method="_on_ContinueButton_pressed"]
